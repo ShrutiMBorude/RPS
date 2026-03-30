@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RPS Battle Arena – Battle</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+
+/* ARENA BG */
+.arena-wrap{min-height:calc(100vh - 56px);background:radial-gradient(ellipse at 50% 100%,rgba(127,119,221,.12) 0%,transparent 60%),linear-gradient(180deg,#0d0d1a 0%,#1a0a2e 100%);padding:20px 16px 120px}
+
+/* FIGHTERS HEADER */
+.fighters-header{display:flex;align-items:center;justify-content:space-between;max-width:780px;margin:0 auto 24px;gap:12px}
+.fighter-panel{flex:1}
+.fighter-top{display:flex;align-items:center;gap:12px}
+.fighter-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid var(--gold);flex-shrink:0;background:rgba(239,159,39,.1)}
+.fighter-avatar.cpu{border-color:var(--accent);background:rgba(233,69,96,.1)}
+.fighter-name{font-family:'Bangers',cursive;font-size:20px;letter-spacing:1px}
+.fighter-rank{font-size:11px;color:var(--muted);font-weight:700}
+.hp-wrap{margin-top:8px}
+.hp-label{display:flex;justify-content:space-between;font-size:11px;font-weight:900;color:var(--muted);margin-bottom:4px}
+.hp-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.hp-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.hp-fill.player{background:linear-gradient(90deg,#EF9F27,#f59e0b)}
+.hp-fill.cpu{background:linear-gradient(90deg,#e94560,#7F77DD)}
+.vs-center{font-family:'Bangers',cursive;font-size:40px;color:var(--accent);letter-spacing:2px;flex-shrink:0;text-align:center;text-shadow:0 0 20px rgba(233,69,96,.5)}
+
+/* BATTLE FIELD */
+.field{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:28px;padding:32px 24px;max-width:780px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.field::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(127,119,221,.06) 0%,transparent 70%);pointer-events:none}
+
+.round-badge{display:inline-block;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 20px;font-family:'Bangers',cursive;font-size:16px;color:var(--muted);letter-spacing:2px;margin-bottom:24px}
+
+/* CHOICES */
+.choices{display:flex;align-items:center;justify-content:center;gap:24px;margin:0 0 24px}
+.choice{background:var(--card);border-radius:20px;width:120px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.08);transition:all .4s;position:relative}
+.choice.player{border-color:rgba(239,159,39,.4)}
+.choice.cpu{border-color:rgba(233,69,96,.3)}
+.choice-emoji{font-size:52px;display:block;line-height:1}
+.choice-sub{font-size:10px;font-weight:900;letter-spacing:1px;margin-top:6px;text-transform:uppercase}
+.choice.player .choice-sub{color:var(--gold)}
+.choice.cpu .choice-sub{color:var(--accent)}
+.choice.revealed{animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.vs-label{font-family:'Bangers',cursive;font-size:28px;color:rgba(255,255,255,.2)}
+
+/* RESULT */
+.result-area{min-height:56px;margin-bottom:20px}
+.result-text{font-family:'Bangers',cursive;font-size:clamp(28px,5vw,44px);letter-spacing:3px;animation:resultPop .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes resultPop{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.result-text.win{color:var(--green)}
+.result-text.lose{color:var(--accent)}
+.result-text.draw{color:var(--gold)}
+.result-text.idle{color:rgba(255,255,255,.2);font-size:18px}
+.result-hint{font-size:13px;color:var(--muted);margin-top:6px}
+
+/* MOVE BUTTONS */
+.moves-label{font-size:12px;font-weight:900;letter-spacing:2px;color:var(--muted);margin-bottom:16px;text-transform:uppercase}
+.move-btns{display:flex;justify-content:center;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+.move-btn{background:var(--card);border:2px solid rgba(255,255,255,.1);color:#fff;width:96px;height:96px;border-radius:20px;cursor:pointer;font-size:0;transition:all .22s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative;overflow:hidden}
+.move-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;border-radius:18px}
+.move-btn.rock::before{background:rgba(226,75,74,.15)}
+.move-btn.paper::before{background:rgba(55,138,221,.15)}
+.move-btn.scissors::before{background:rgba(74,222,128,.15)}
+.move-btn:hover{transform:scale(1.12) translateY(-4px);border-color:var(--gold)}
+.move-btn:hover::before{opacity:1}
+.move-btn:active{transform:scale(0.96)}
+.move-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.m-emoji{font-size:40px;line-height:1}
+.m-label{font-size:10px;font-weight:900;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+
+/* SCOREBOARD */
+.scoreboard{display:flex;justify-content:center;gap:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.sc-item{text-align:center}
+.sc-num{font-family:'Bangers',cursive;font-size:36px;line-height:1}
+.sc-num.win{color:var(--green)}
+.sc-num.lose{color:var(--accent)}
+.sc-num.draw{color:var(--gold)}
+.sc-lbl{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+
+/* ROUND HISTORY */
+.history{display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;min-height:28px}
+.hist-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;border:1.5px solid}
+.hist-dot.win{background:rgba(74,222,128,.15);border-color:var(--green)}
+.hist-dot.lose{background:rgba(233,69,96,.15);border-color:var(--accent)}
+.hist-dot.draw{background:rgba(239,159,39,.15);border-color:var(--gold)}
+
+/* CONTROLS */
+.ctrl-row{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.ctrl-btn{background:transparent;border:1.5px solid rgba(255,255,255,.15);color:var(--muted);padding:9px 22px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;transition:all .2s}
+.ctrl-btn:hover{border-color:var(--gold);color:var(--gold)}
+.mode-badge{display:inline-block;background:rgba(127,119,221,.15);border:1px solid rgba(127,119,221,.3);color:var(--purple);padding:4px 14px;border-radius:12px;font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:16px}
+
+/* GAME OVER OVERLAY */
+.gameover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:center;justify-content:center}
+.gameover.show{display:flex}
+.gameover-box{background:var(--card);border-radius:28px;padding:48px 40px;text-align:center;border:2px solid var(--gold);max-width:380px;width:90%;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+.go-title{font-family:'Bangers',cursive;font-size:52px;letter-spacing:4px;margin-bottom:8px}
+.go-title.win{color:var(--green)}
+.go-title.lose{color:var(--accent)}
+.go-emoji{font-size:72px;margin:16px 0}
+.go-score{font-family:'Bangers',cursive;font-size:24px;color:var(--gold);margin-bottom:24px}
+.go-btns{display:flex;flex-direction:column;gap:12px}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#f59e0b);border:none;color:var(--darker);padding:14px 32px;border-radius:50px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px}
+.btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:var(--muted);padding:12px 32px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;display:block}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="1_home.html">⚔️ RPS ARENA</a>
+  <div class="nav-links">
+    <a class="nav-btn" href="1_home.html">Home</a>
+    <a class="nav-btn" href="2_character_selection.html">Characters</a>
+    <a class="nav-btn active" href="3_battle_arena.html">Battle</a>
+    <a class="nav-btn" href="4_rewards.html">Rewards</a>
+    <a class="nav-btn" href="5_shop.html">Shop</a>
+    <a class="nav-btn" href="6_multiplayer.html">Multiplayer</a>
+    <a class="nav-btn" href="7_profile.html">Profile</a>
+  </div>
+</nav>
+
+<div class="arena-wrap">
+
+  <div class="fighters-header">
+    <div class="fighter-panel">
+      <div class="fighter-top">
+        <div class="fighter-avatar" id="player-avatar">🧑</div>
+        <div>
+          <div class="fighter-name" id="player-char-name">WARRIOR</div>
+          <div class="fighter-rank">🏅 Gold · Rank #142</div>
+        </div>
+      </div>
+      <div class="hp-wrap">
+        <div class="hp-label"><span>HP</span><span id="player-hp-val">100</span></div>
+        <div class="hp-track"><div class="hp-fill player" id="player-hp" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="vs-center">VS</div>
+    <div class="fighter-panel" style="text-align:right">
+      <div class="fighter-top" style="flex-direction:row-reverse">
+        <div class="fighter-avatar cpu">🤖</div>
+        <div style="text-align:right">
+          <div class="fighter-name">CPU BLAZE</div>
+          <div class="fighter-rank">💀 Elite · AI Master</div>
+        </div>
+      </div>
+      <div class="hp-wrap">
+        <div class="hp-label"><span>HP</span><span id="cpu-hp-val">100</span></div>
+        <div class="hp-track"><div class="hp-fill cpu" id="cpu-hp" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="mode-badge">🤖 VS CPU · BEST OF 5</div>
+    <div class="round-badge">ROUND <span id="round-num">1</span> / 5</div>
+
+    <div class="history" id="history"></div>
+
+    <div class="choices">
+      <div class="choice player" id="p-choice"><span class="choice-emoji" id="p-emoji">❓</span><span class="choice-sub">YOU</span></div>
+      <div class="vs-label">VS</div>
+      <div class="choice cpu" id="c-choice"><span class="choice-emoji" id="c-emoji">❓</span><span class="choice-sub">CPU</span></div>
+    </div>
+
+    <div class="result-area">
+      <div class="result-text idle" id="result-text">Choose your move below!</div>
+      <div class="result-hint" id="result-hint"></div>
+    </div>
+
+    <p class="moves-label">Your move</p>
+    <div class="move-btns">
+      <button class="move-btn rock" onclick="play('rock')"><span class="m-emoji">🪨</span><span class="m-label">Rock</span></button>
+      <button class="move-btn paper" onclick="play('paper')"><span class="m-emoji">📄</span><span class="m-label">Paper</span></button>
+      <button class="move-btn scissors" onclick="play('scissors')"><span class="m-emoji">✂️</span><span class="m-label">Scissors</span></button>
+    </div>
+
+    <div class="scoreboard">
+      <div class="sc-item"><div class="sc-num win" id="sc-w">0</div><div class="sc-lbl">Wins</div></div>
+      <div class="sc-item"><div class="sc-num draw" id="sc-d">0</div><div class="sc-lbl">Draws</div></div>
+      <div class="sc-item"><div class="sc-num lose" id="sc-l">0</div><div class="sc-lbl">Losses</div></div>
+    </div>
+
+    <div class="ctrl-row">
+      <button class="ctrl-btn" onclick="resetGame()">🔄 New Match</button>
+      <a class="ctrl-btn" href="2_character_selection.html">⬅ Change Fighter</a>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div class="gameover" id="gameover">
+  <div class="gameover-box">
+    <div class="go-title" id="go-title">YOU WIN!</div>
+    <div class="go-emoji" id="go-emoji">🏆</div>
+    <div class="go-score" id="go-score"></div>
+    <div class="go-btns">
+      <button class="btn-gold" onclick="resetGame();document.getElementById('gameover').classList.remove('show')">PLAY AGAIN</button>
+      <a class="btn-ghost" href="4_rewards.html">Claim Rewards →</a>
+      <a class="btn-ghost" href="7_profile.html">View Profile</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const moves={rock:'🪨',paper:'📄',scissors:'✂️'};
+const beats={rock:'scissors',paper:'rock',scissors:'paper'};
+const hints={rock:'Rock crushes Scissors! ✊',paper:'Paper covers Rock! 📄',scissors:'Scissors cuts Paper! ✂️'};
+let sc={w:0,d:0,l:0},round=1,pHP=100,cHP=100,playing=false;
+
+function setHP(who,val){
+  document.getElementById(who+'-hp-val').textContent=val;
+  document.getElementById(who+'-hp').style.width=val+'%';
+}
+
+function addHistory(r){
+  const d=document.createElement('div');
+  d.className='hist-dot '+r;
+  d.textContent=r==='win'?'W':r==='lose'?'L':'D';
+  document.getElementById('history').appendChild(d);
+}
+
+function setBtns(en){
+  document.querySelectorAll('.move-btn').forEach(b=>b.disabled=!en);
+}
+
+function play(move){
+  if(playing)return;
+  playing=true;
+  setBtns(false);
+  const cpu=Object.keys(moves)[Math.floor(Math.random()*3)];
+  // reveal with delay
+  document.getElementById('p-emoji').textContent='⏳';
+  document.getElementById('c-emoji').textContent='⏳';
+  setTimeout(()=>{
+    document.getElementById('p-emoji').textContent=moves[move];
+    document.getElementById('c-emoji').textContent=moves[cpu];
+    document.getElementById('p-choice').classList.add('revealed');
+    document.getElementById('c-choice').classList.add('revealed');
+
+    const res=document.getElementById('result-text');
+    const hint=document.getElementById('result-hint');
+    let outcome;
+    if(move===cpu){
+      outcome='draw';
+      res.className='result-text draw';res.textContent='🤝 DRAW!';
+      hint.textContent='Same move — try to read your opponent!';
+      sc.d++;document.getElementById('sc-d').textContent=sc.d;
+    } else if(beats[move]===cpu){
+      outcome='win';
+      res.className='result-text win';res.textContent='🎉 YOU WIN THE ROUND!';
+      hint.textContent=hints[move];
+      sc.w++;document.getElementById('sc-w').textContent=sc.w;
+      cHP=Math.max(0,cHP-20);setHP('cpu',cHP);
+    } else {
+      outcome='lose';
+      res.className='result-text lose';res.textContent='💥 CPU WINS THE ROUND!';
+      hint.textContent='Ouch! Better luck next round.';
+      sc.l++;document.getElementById('sc-l').textContent=sc.l;
+      pHP=Math.max(0,pHP-20);setHP('player',pHP);
+    }
+    addHistory(outcome);
+    round++;document.getElementById('round-num').textContent=Math.min(round,5);
+
+    if(pHP<=0||cHP<=0||round>5){
+      setTimeout(()=>endGame(),700);
+    } else {
+      setTimeout(()=>{
+        document.getElementById('p-emoji').textContent='❓';
+        document.getElementById('c-emoji').textContent='❓';
+        document.getElementById('p-choice').classList.remove('revealed');
+        document.getElementById('c-choice').classList.remove('revealed');
+        res.className='result-text idle';res.textContent='Choose your move!';
+        hint.textContent='';
+        setBtns(true);playing=false;
+      },1400);
+    }
+  },600);
+}
+
+function endGame(){
+  const box=document.getElementById('gameover');
+  const title=document.getElementById('go-title');
+  const emoji=document.getElementById('go-emoji');
+  const score=document.getElementById('go-score');
+  if(sc.w>sc.l){title.className='go-title win';title.textContent='YOU WIN!';emoji.textContent='🏆';}
+  else if(sc.l>sc.w){title.className='go-title lose';title.textContent='YOU LOSE!';emoji.textContent='💀';}
+  else{title.className='go-title draw';title.textContent='DRAW!';emoji.textContent='🤝';}
+  score.textContent=`W:${sc.w} D:${sc.d} L:${sc.l}`;
+  box.classList.add('show');
+}
+
+function resetGame(){
+  sc={w:0,d:0,l:0};round=1;pHP=100;cHP=100;playing=false;
+  ['sc-w','sc-d','sc-l'].forEach(id=>document.getElementById(id).textContent=0);
+  setHP('player',100);setHP('cpu',100);
+  document.getElementById('round-num').textContent=1;
+  document.getElementById('p-emoji').textContent='❓';
+  document.getElementById('c-emoji').textContent='❓';
+  document.getElementById('result-text').className='result-text idle';
+  document.getElementById('result-text').textContent='Choose your move below!';
+  document.getElementById('result-hint').textContent='';
+  document.getElementById('history').innerHTML='';
+  setBtns(true);
+}
+
+// load char
+const saved=localStorage.getItem('rps_char');
+if(saved){
+  const d=JSON.parse(saved);
+  document.getElementById('player-avatar').textContent=d.emoji;
+  document.getElementById('player-char-name').textContent=d.name.toUpperCase();
+}
+</script>
+</body>
+</html>

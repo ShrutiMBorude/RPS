@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RPS Battle Arena – Rewards</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+
+/* WALLET BAR */
+.wallet{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:16px 24px}
+.wallet-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.wallet-coins{display:flex;align-items:center;gap:20px}
+.w-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 18px}
+.w-icon{font-size:20px}
+.w-val{font-family:'Bangers',cursive;font-size:22px;color:var(--gold)}
+.w-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.streak-info{display:flex;align-items:center;gap:8px;background:rgba(233,69,96,.08);border:1px solid rgba(233,69,96,.2);border-radius:12px;padding:10px 18px}
+.streak-num{font-family:'Bangers',cursive;font-size:22px;color:var(--accent)}
+
+/* PAGE HEADER */
+.page-header{padding:48px 24px 28px;text-align:center;background:linear-gradient(160deg,#1a1a2e,#0d0d1a);position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(239,159,39,.1),transparent 65%)}
+.page-title{font-family:'Bangers',cursive;font-size:clamp(36px,7vw,68px);letter-spacing:4px;color:var(--gold);position:relative}
+.page-sub{color:var(--muted);margin-top:8px;font-size:14px;letter-spacing:1px;position:relative}
+
+/* DAILY STREAK */
+.streak-section{max-width:1100px;margin:32px auto 0;padding:0 24px}
+.section-head{font-family:'Bangers',cursive;font-size:28px;color:var(--muted);letter-spacing:3px;margin-bottom:16px;text-transform:uppercase}
+.daily-track{display:flex;gap:10px;flex-wrap:wrap}
+.day-box{flex:1;min-width:72px;background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;border:1.5px solid rgba(255,255,255,.06);transition:all .2s}
+.day-box.done{border-color:var(--gold);background:rgba(239,159,39,.08)}
+.day-box.today{border-color:var(--accent);background:rgba(233,69,96,.08);transform:scale(1.05)}
+.day-label{font-size:10px;font-weight:900;letter-spacing:1px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.day-icon{font-size:24px;margin-bottom:4px}
+.day-reward{font-family:'Bangers',cursive;font-size:14px;color:var(--gold)}
+.day-box.done .day-icon::after{content:' ✓'}
+
+/* REWARDS GRID */
+.rewards-section{max-width:1100px;margin:40px auto 0;padding:0 24px 60px}
+.rewards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+
+.reward-card{background:var(--card);border-radius:20px;overflow:hidden;border:1.5px solid rgba(255,255,255,.06);transition:all .3s;position:relative}
+.reward-card:hover{transform:translateY(-4px);border-color:rgba(239,159,39,.2)}
+.reward-card.claimed{opacity:.6}
+.reward-card.locked{opacity:.4;filter:grayscale(.6)}
+
+.card-top{padding:28px 24px 20px;position:relative}
+.card-top.daily{background:linear-gradient(135deg,rgba(239,159,39,.15),rgba(239,159,39,.04))}
+.card-top.battle{background:linear-gradient(135deg,rgba(233,69,96,.15),rgba(233,69,96,.04))}
+.card-top.ranked{background:linear-gradient(135deg,rgba(127,119,221,.15),rgba(127,119,221,.04))}
+.card-top.social{background:linear-gradient(135deg,rgba(55,138,221,.15),rgba(55,138,221,.04))}
+.card-top.streak{background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(74,222,128,.04))}
+.card-top.special{background:linear-gradient(135deg,rgba(226,75,74,.15),rgba(226,75,74,.04))}
+
+.r-type-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:900;letter-spacing:1px;padding:3px 10px;border-radius:8px;text-transform:uppercase}
+.daily-badge{background:rgba(239,159,39,.2);color:var(--gold)}
+.battle-badge{background:rgba(233,69,96,.2);color:var(--accent)}
+.ranked-badge{background:rgba(127,119,221,.2);color:var(--purple)}
+.social-badge{background:rgba(55,138,221,.2);color:#60a5fa}
+.streak-badge{background:rgba(74,222,128,.2);color:var(--green)}
+.special-badge{background:rgba(226,75,74,.2);color:#f87171}
+
+.claimed-stamp{position:absolute;top:14px;left:14px;background:var(--green);color:var(--darker);font-size:9px;font-weight:900;padding:3px 10px;border-radius:8px;letter-spacing:1px}
+.locked-stamp{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.1);color:var(--muted);font-size:9px;font-weight:900;padding:3px 10px;border-radius:8px;letter-spacing:1px}
+
+.r-icon{font-size:52px;margin-bottom:14px;display:block}
+.r-name{font-family:'Bangers',cursive;font-size:24px;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+.r-desc{color:var(--muted);font-size:13px;line-height:1.5}
+
+.card-bottom{padding:18px 24px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.r-prize{display:flex;gap:8px;flex-wrap:wrap}
+.prize-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.06);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:900}
+.prize-pill.coin{color:var(--gold)}
+.prize-pill.gem{color:#a78bfa}
+.prize-pill.item{color:var(--green)}
+
+.claim-btn{background:linear-gradient(135deg,var(--gold),#f59e0b);border:none;color:var(--darker);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.claim-btn:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(239,159,39,.4)}
+.claim-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.claim-btn.claimed-btn{background:rgba(74,222,128,.2);color:var(--green);border:1px solid rgba(74,222,128,.3)}
+
+/* PROGRESS BAR */
+.progress-wrap{padding:12px 24px 16px}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.prog-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--purple))}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="1_home.html">⚔️ RPS ARENA</a>
+  <div class="nav-links">
+    <a class="nav-btn" href="1_home.html">Home</a>
+    <a class="nav-btn" href="2_character_selection.html">Characters</a>
+    <a class="nav-btn" href="3_battle_arena.html">Battle</a>
+    <a class="nav-btn active" href="4_rewards.html">Rewards</a>
+    <a class="nav-btn" href="5_shop.html">Shop</a>
+    <a class="nav-btn" href="6_multiplayer.html">Multiplayer</a>
+    <a class="nav-btn" href="7_profile.html">Profile</a>
+  </div>
+</nav>
+
+<div class="wallet">
+  <div class="wallet-inner">
+    <div class="wallet-coins">
+      <div class="w-item"><span class="w-icon">🪙</span><div><div class="w-val" id="coins">1,250</div><div class="w-label">Coins</div></div></div>
+      <div class="w-item"><span class="w-icon">💎</span><div><div class="w-val" style="color:#a78bfa">340</div><div class="w-label">Gems</div></div></div>
+    </div>
+    <div class="streak-info">
+      <span style="font-size:20px">🔥</span>
+      <div><div class="streak-num">3</div><div style="font-size:11px;color:var(--muted);font-weight:700">Day Streak</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1 class="page-title">REWARDS</h1>
+  <p class="page-sub">Complete challenges and earn epic prizes</p>
+</div>
+
+<div class="streak-section">
+  <div class="section-head">📅 Daily Login Streak</div>
+  <div class="daily-track">
+    <div class="day-box done"><div class="day-label">Day 1</div><div class="day-icon">🪙</div><div class="day-reward">+50</div></div>
+    <div class="day-box done"><div class="day-label">Day 2</div><div class="day-icon">🪙</div><div class="day-reward">+100</div></div>
+    <div class="day-box done"><div class="day-label">Day 3</div><div class="day-icon">💎</div><div class="day-reward">+20</div></div>
+    <div class="day-box today"><div class="day-label">Today</div><div class="day-icon">🎁</div><div class="day-reward">+200</div></div>
+    <div class="day-box"><div class="day-label">Day 5</div><div class="day-icon">🪙</div><div class="day-reward">+300</div></div>
+    <div class="day-box"><div class="day-label">Day 6</div><div class="day-icon">💎</div><div class="day-reward">+50</div></div>
+    <div class="day-box"><div class="day-label">Day 7</div><div class="day-icon">👑</div><div class="day-reward">EPIC</div></div>
+  </div>
+</div>
+
+<div class="rewards-section">
+  <div class="section-head">🏆 All Rewards</div>
+  <div class="rewards-grid">
+
+    <div class="reward-card claimed">
+      <div class="card-top daily"><span class="r-type-badge daily-badge">Daily</span><span class="claimed-stamp">✓ CLAIMED</span><span class="r-icon">📅</span><div class="r-name">Daily Login</div><div class="r-desc">Log in today and receive your daily bonus coins — comes back every 24 hours.</div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +100</span></div><button class="claim-btn claimed-btn" disabled>✓ Claimed</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top battle"><span class="r-type-badge battle-badge">Battle</span><span class="r-icon">⚔️</span><div class="r-name">Win 5 Battles</div><div class="r-desc">Prove your combat skills by winning 5 battles — any mode counts.</div></div>
+      <div class="progress-wrap"><div class="prog-meta"><span>Progress</span><span>3 / 5</span></div><div class="prog-track"><div class="prog-fill" style="width:60%"></div></div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +500</span></div><button class="claim-btn" disabled style="opacity:.4">In Progress</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top social"><span class="r-type-badge social-badge">Social</span><span class="r-icon">🌐</span><div class="r-name">First Multiplayer Win</div><div class="r-desc">Beat a real human opponent in a multiplayer match for the very first time.</div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill gem">💎 +50</span><span class="prize-pill coin">🪙 +200</span></div><button class="claim-btn" onclick="claimReward(this)">Claim</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top battle"><span class="r-type-badge battle-badge">Battle</span><span class="r-icon">🎯</span><div class="r-name">Perfect Match</div><div class="r-desc">Win a best-of-5 match without losing a single round. Pure dominance.</div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +300</span></div><button class="claim-btn" onclick="claimReward(this)">Claim</button></div>
+    </div>
+
+    <div class="reward-card locked">
+      <div class="card-top ranked"><span class="r-type-badge ranked-badge">Ranked</span><span class="locked-stamp">🔒 LOCKED</span><span class="r-icon">👑</span><div class="r-name">Reach Gold Rank</div><div class="r-desc">Climb the ranked ladder all the way to Gold tier. You're almost there!</div></div>
+      <div class="progress-wrap"><div class="prog-meta"><span>Silver III → Gold I</span><span>1 / 3 wins</span></div><div class="prog-track"><div class="prog-fill" style="width:33%"></div></div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +2000</span><span class="prize-pill gem">💎 +100</span></div><button class="claim-btn" disabled>Locked</button></div>
+    </div>
+
+    <div class="reward-card locked">
+      <div class="card-top streak"><span class="r-type-badge streak-badge">Streak</span><span class="locked-stamp">🔒 LOCKED</span><span class="r-icon">🔥</span><div class="r-name">7-Day Streak</div><div class="r-desc">Log in every day for 7 consecutive days. You're on day 3 — keep going!</div></div>
+      <div class="progress-wrap"><div class="prog-meta"><span>Day streak</span><span>3 / 7</span></div><div class="prog-track"><div class="prog-fill" style="width:43%"></div></div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill gem">💎 +200</span><span class="prize-pill item">🎁 Epic Skin</span></div><button class="claim-btn" disabled>Keep Streak</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top special"><span class="r-type-badge special-badge">Special</span><span class="r-icon">🏟️</span><div class="r-name">Arena Veteran</div><div class="r-desc">Play a total of 50 battles. Every fight counts towards the arena legacy.</div></div>
+      <div class="progress-wrap"><div class="prog-meta"><span>Battles played</span><span>42 / 50</span></div><div class="prog-track"><div class="prog-fill" style="width:84%"></div></div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +1000</span><span class="prize-pill item">🎖️ Badge</span></div><button class="claim-btn" disabled style="opacity:.4">Almost!</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top ranked"><span class="r-type-badge ranked-badge">Ranked</span><span class="r-icon">💀</span><div class="r-name">Comeback King</div><div class="r-desc">Win a match after being down 0-2 in a best-of-5. Never give up!</div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +800</span><span class="prize-pill gem">💎 +30</span></div><button class="claim-btn" onclick="claimReward(this)">Claim</button></div>
+    </div>
+
+    <div class="reward-card">
+      <div class="card-top social"><span class="r-type-badge social-badge">Social</span><span class="r-icon">👥</span><div class="r-name">Refer a Friend</div><div class="r-desc">Invite a friend to RPS Battle Arena and win a match together.</div></div>
+      <div class="card-bottom"><div class="r-prize"><span class="prize-pill coin">🪙 +500</span><span class="prize-pill gem">💎 +50</span></div><button class="claim-btn" onclick="claimReward(this)">Claim</button></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function claimReward(btn){
+  const card=btn.closest('.reward-card');
+  card.classList.add('claimed');
+  btn.textContent='✓ Claimed';
+  btn.className='claim-btn claimed-btn';
+  btn.disabled=true;
+  // add stamp
+  const top=card.querySelector('.card-top');
+  const stamp=document.createElement('span');
+  stamp.className='claimed-stamp';stamp.textContent='✓ CLAIMED';
+  top.insertBefore(stamp,top.firstChild);
+  // add coins
+  const cur=parseInt(document.getElementById('coins').textContent.replace(/,/g,''))+200;
+  document.getElementById('coins').textContent=cur.toLocaleString();
+}
+</script>
+</body>
+</html>

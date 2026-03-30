@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RPS Battle Arena – Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80;--blue:#378ADD}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+
+/* HERO BANNER */
+.profile-banner{background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 50%,#1a0a2e 100%);padding:48px 24px 0;position:relative;overflow:hidden}
+.profile-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(239,159,39,.12),transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(233,69,96,.1),transparent 55%)}
+.banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;position:relative}
+.avatar-wrap{position:relative;flex-shrink:0}
+.avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:50px;border:4px solid var(--gold);box-shadow:0 0 30px rgba(239,159,39,.25)}
+.avatar-level{position:absolute;bottom:-4px;right:-4px;background:var(--gold);color:var(--darker);font-family:'Bangers',cursive;font-size:14px;padding:2px 8px;border-radius:10px;letter-spacing:1px}
+.profile-info{flex:1;padding-bottom:24px}
+.profile-name{font-family:'Bangers',cursive;font-size:clamp(32px,6vw,56px);color:var(--gold);letter-spacing:3px;line-height:1}
+.profile-id{color:var(--muted);font-size:13px;margin:6px 0 10px;font-weight:700}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.rank-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(239,159,39,.25),rgba(239,159,39,.1));border:1px solid rgba(239,159,39,.4);color:var(--gold);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900;letter-spacing:1px}
+.title-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(127,119,221,.2);border:1px solid rgba(127,119,221,.4);color:var(--purple);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(55,138,221,.2);border:1px solid rgba(55,138,221,.4);color:var(--blue);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900}
+.favorite-char{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700}
+.banner-actions{padding-bottom:24px;display:flex;flex-direction:column;gap:8px;align-self:flex-end}
+.btn-edit{background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
+.btn-edit:hover{background:var(--gold);color:var(--darker)}
+.btn-share{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:var(--muted);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
+.btn-share:hover{border-color:var(--muted);color:var(--text)}
+
+/* TABS */
+.profile-tabs{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:0 24px;display:flex;overflow-x:auto}
+.p-tab{background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);padding:14px 18px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;white-space:nowrap;transition:all .2s}
+.p-tab:hover{color:var(--text)}
+.p-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* CONTENT */
+.profile-content{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.p-section{margin-bottom:36px}
+.p-section-title{font-family:'Bangers',cursive;font-size:22px;color:var(--muted);letter-spacing:3px;margin-bottom:16px;text-transform:uppercase}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.stat-box{background:var(--card);border-radius:16px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,.06);transition:border-color .2s}
+.stat-box:hover{border-color:rgba(239,159,39,.2)}
+.s-num{font-family:'Bangers',cursive;font-size:36px;line-height:1}
+.s-label{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+
+/* WIN RATE CHART */
+.wr-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.wr-card{background:var(--card);border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,.06)}
+.wr-title{font-weight:900;font-size:15px;margin-bottom:16px;color:var(--gold)}
+.donut-wrap{display:flex;align-items:center;gap:20px}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.leg-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.bar-stat{margin-bottom:10px}
+.bar-label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.bar-track{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ach-card{background:var(--card);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.06);transition:all .2s}
+.ach-card:hover{border-color:rgba(239,159,39,.2)}
+.ach-card.locked{opacity:.35;filter:grayscale(.7)}
+.ach-card.rare{border-color:rgba(127,119,221,.3)}
+.ach-icon{font-size:36px;flex-shrink:0}
+.ach-info{flex:1}
+.ach-name{font-weight:900;font-size:14px;color:var(--gold);margin-bottom:3px}
+.ach-card.locked .ach-name{color:var(--muted)}
+.ach-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.ach-date{font-size:10px;color:rgba(255,255,255,.25);margin-top:4px}
+.ach-rarity{font-size:10px;font-weight:900;padding:2px 8px;border-radius:6px;flex-shrink:0}
+.ar-common{background:rgba(160,160,192,.15);color:var(--muted)}
+.ar-rare{background:rgba(127,119,221,.2);color:var(--purple)}
+.ar-epic{background:rgba(233,69,96,.2);color:var(--accent)}
+.ar-legend{background:rgba(239,159,39,.2);color:var(--gold)}
+
+/* MATCH HISTORY */
+.match-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--card);border-radius:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,.06)}
+.match-result{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:16px;letter-spacing:1px;flex-shrink:0}
+.result-w{background:rgba(74,222,128,.15);border:1.5px solid var(--green);color:var(--green)}
+.result-l{background:rgba(233,69,96,.15);border:1.5px solid var(--accent);color:var(--accent)}
+.result-d{background:rgba(239,159,39,.15);border:1.5px solid var(--gold);color:var(--gold)}
+.match-opp{flex:1}
+.match-opp-name{font-weight:900;font-size:14px;margin-bottom:2px}
+.match-meta{font-size:12px;color:var(--muted)}
+.match-score{font-family:'Bangers',cursive;font-size:20px}
+.match-score.w{color:var(--green)}
+.match-score.l{color:var(--accent)}
+.match-score.d{color:var(--gold)}
+.match-xp{font-size:12px;font-weight:900;color:var(--gold)}
+
+/* COLLECTION */
+.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.coll-item{background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.coll-item.active-item{border-color:var(--gold);background:rgba(239,159,39,.07)}
+.coll-emoji{font-size:34px;display:block;margin-bottom:6px}
+.coll-name{font-size:11px;font-weight:700;color:var(--muted)}
+.coll-rarity{font-size:9px;font-weight:900;margin-top:3px}
+
+/* HIDDEN TABS */
+.tab-content{display:none}
+.tab-content.active{display:block}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="1_home.html">⚔️ RPS ARENA</a>
+  <div class="nav-links">
+    <a class="nav-btn" href="1_home.html">Home</a>
+    <a class="nav-btn" href="2_character_selection.html">Characters</a>
+    <a class="nav-btn" href="3_battle_arena.html">Battle</a>
+    <a class="nav-btn" href="4_rewards.html">Rewards</a>
+    <a class="nav-btn" href="5_shop.html">Shop</a>
+    <a class="nav-btn" href="6_multiplayer.html">Multiplayer</a>
+    <a class="nav-btn active" href="7_profile.html">Profile</a>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="profile-banner">
+  <div class="banner-inner">
+    <div class="avatar-wrap">
+      <div class="avatar" id="profile-avatar">🧑</div>
+      <div class="avatar-level">Lv. 42</div>
+    </div>
+    <div class="profile-info">
+      <div class="profile-name" id="profile-name">ARENA WARRIOR</div>
+      <div class="profile-id">Player ID: #00142 &nbsp;·&nbsp; Joined March 2025 &nbsp;·&nbsp; 🌏 India</div>
+      <div class="badge-row">
+        <span class="rank-badge">👑 Gold II</span>
+        <span class="title-badge">⚡ Combo King</span>
+        <span class="verified-badge">✓ Verified</span>
+      </div>
+      <div class="favorite-char">
+        <span>Main Fighter:</span><span style="font-size:20px" id="fav-char">🪨</span><span id="fav-char-name" style="color:var(--text)">Rock</span>
+      </div>
+    </div>
+    <div class="banner-actions">
+      <button class="btn-edit" onclick="editProfile()">✏️ Edit Profile</button>
+      <button class="btn-share">📤 Share Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE TABS -->
+<div class="profile-tabs">
+  <button class="p-tab active" onclick="switchTab(this,'overview')">Overview</button>
+  <button class="p-tab" onclick="switchTab(this,'achievements')">Achievements</button>
+  <button class="p-tab" onclick="switchTab(this,'history')">Match History</button>
+  <button class="p-tab" onclick="switchTab(this,'collection')">Collection</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="profile-content">
+  <div id="tab-overview" class="tab-content active">
+    <div class="p-section">
+      <div class="p-section-title">📊 Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="s-num" style="color:var(--green)">142</div><div class="s-label">Total Wins</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--accent)">58</div><div class="s-label">Losses</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--gold)">12</div><div class="s-label">Draws</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--gold)">71%</div><div class="s-label">Win Rate</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--purple)">12</div><div class="s-label">Best Streak</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--blue)">212</div><div class="s-label">Battles</div></div>
+        <div class="stat-box"><div class="s-num" style="color:var(--gold)">1,250</div><div class="s-label">Coins</div></div>
+        <div class="stat-box"><div class="s-num" style="color:#a78bfa">340</div><div class="s-label">Gems</div></div>
+      </div>
+    </div>
+
+    <div class="p-section">
+      <div class="p-section-title">📈 Performance</div>
+      <div class="wr-section">
+        <div class="wr-card">
+          <div class="wr-title">Overall Win Rate</div>
+          <div class="donut-wrap">
+            <svg width="90" height="90" viewBox="0 0 90 90" class="donut-svg">
+              <circle cx="45" cy="45" r="35" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+              <circle cx="45" cy="45" r="35" fill="none" stroke="#4ade80" stroke-width="10" stroke-dasharray="156 64" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <circle cx="45" cy="45" r="35" fill="none" stroke="#e94560" stroke-width="10" stroke-dasharray="53 167" stroke-dashoffset="-156" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <text x="45" y="49" text-anchor="middle" fill="var(--gold)" font-family="Bangers,cursive" font-size="16" letter-spacing="1">71%</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="leg-item"><span class="leg-dot" style="background:var(--green)"></span><span>Wins: 142</span></div>
+              <div class="leg-item"><span class="leg-dot" style="background:var(--accent)"></span><span>Losses: 58</span></div>
+              <div class="leg-item"><span class="leg-dot" style="background:var(--gold)"></span><span>Draws: 12</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="wr-card">
+          <div class="wr-title">Move Usage</div>
+          <div class="bar-stat"><div class="bar-label"><span>🪨 Rock</span><span>52%</span></div><div class="bar-track"><div class="bar-fill" style="width:52%;background:linear-gradient(90deg,#E24B4A,#f87171)"></div></div></div>
+          <div class="bar-stat"><div class="bar-label"><span>📄 Paper</span><span>28%</span></div><div class="bar-track"><div class="bar-fill" style="width:28%;background:linear-gradient(90deg,var(--blue),#60a5fa)"></div></div></div>
+          <div class="bar-stat"><div class="bar-label"><span>✂️ Scissors</span><span>20%</span></div><div class="bar-track"><div class="bar-fill" style="width:20%;background:linear-gradient(90deg,var(--green),#86efac)"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div id="tab-achievements" class="tab-content">
+    <div class="p-section">
+      <div class="p-section-title">🏆 Achievements (14 / 32)</div>
+      <div class="ach-grid">
+        <div class="ach-card"><div class="ach-icon">🏆</div><div class="ach-info"><div class="ach-name">First Victory</div><div class="ach-desc">Win your very first battle</div><div class="ach-date">March 15, 2025</div></div><span class="ach-rarity ar-common">Common</span></div>
+        <div class="ach-card"><div class="ach-icon">🔥</div><div class="ach-info"><div class="ach-name">On Fire</div><div class="ach-desc">Achieve a 5 win streak</div><div class="ach-date">March 22, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card rare"><div class="ach-icon">🪨</div><div class="ach-info"><div class="ach-name">Rock Solid</div><div class="ach-desc">Win 50 battles as Rock</div><div class="ach-date">April 1, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card"><div class="ach-icon">⚡</div><div class="ach-info"><div class="ach-name">Lightning Reflexes</div><div class="ach-desc">Win a round in under 2 seconds</div><div class="ach-date">March 18, 2025</div></div><span class="ach-rarity ar-common">Common</span></div>
+        <div class="ach-card"><div class="ach-icon">🌐</div><div class="ach-info"><div class="ach-name">Social Warrior</div><div class="ach-desc">Win 10 multiplayer matches</div><div class="ach-date">April 5, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card"><div class="ach-icon">🎯</div><div class="ach-info"><div class="ach-name">Perfect Match</div><div class="ach-desc">Win a best-of-5 without losing</div><div class="ach-date">April 8, 2025</div></div><span class="ach-rarity ar-epic">Epic</span></div>
+        <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-info"><div class="ach-name">Legend</div><div class="ach-desc">Reach Legendary rank</div></div><span class="ach-rarity ar-legend">Legend</span></div>
+        <div class="ach-card locked"><div class="ach-icon">💯</div><div class="ach-info"><div class="ach-name">Century Club</div><div class="ach-desc">Play 100 battles in a row</div></div><span class="ach-rarity ar-epic">Epic</span></div>
+        <div class="ach-card locked"><div class="ach-icon">🌍</div><div class="ach-info"><div class="ach-name">World Conqueror</div><div class="ach-desc">Beat players from 50 countries</div></div><span class="ach-rarity ar-legend">Legend</span></div>
+        <div class="ach-card locked"><div class="ach-icon">💀</div><div class="ach-info"><div class="ach-name">Destroyer</div><div class="ach-desc">Win 500 total battles</div></div><span class="ach-rarity ar-epic">Epic</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCH HISTORY -->
+  <div id="tab-history" class="tab-content">
+    <div class="p-section">
+      <div class="p-section-title">📜 Recent Matches</div>
+      <div class="match-row"><div class="match-result result-w">W</div><div class="match-opp"><div class="match-opp-name">ShadowRock99</div><div class="match-meta">Best of 5 · Ranked · 2 hrs ago</div></div><div><div class="match-score w">3–1</div><div class="match-xp">+48 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-w">W</div><div class="match-opp"><div class="match-opp-name">PaperQueen</div><div class="match-meta">Best of 3 · Quick Match · 4 hrs ago</div></div><div><div class="match-score w">2–0</div><div class="match-xp">+32 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-l">L</div><div class="match-opp"><div class="match-opp-name">BladeRunner</div><div class="match-meta">Best of 5 · Ranked · Yesterday</div></div><div><div class="match-score l">1–3</div><div class="match-xp">+10 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-d">D</div><div class="match-opp"><div class="match-opp-name">GraniteGod</div><div class="match-meta">Best of 5 · Quick Match · Yesterday</div></div><div><div class="match-score d">2–2</div><div class="match-xp">+20 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-w">W</div><div class="match-opp"><div class="match-opp-name">NovaBlade</div><div class="match-meta">Best of 3 · Room · 2 days ago</div></div><div><div class="match-score w">2–1</div><div class="match-xp">+28 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-w">W</div><div class="match-opp"><div class="match-opp-name">IceScissor</div><div class="match-meta">Best of 5 · Ranked · 2 days ago</div></div><div><div class="match-score w">3–0</div><div class="match-xp">+55 XP</div></div></div>
+      <div class="match-row"><div class="match-result result-l">L</div><div class="match-opp"><div class="match-opp-name">ScrollMaster</div><div class="match-meta">Best of 7 · Ranked · 3 days ago</div></div><div><div class="match-score l">2–4</div><div class="match-xp">+12 XP</div></div></div>
+    </div>
+  </div>
+
+  <!-- COLLECTION -->
+  <div id="tab-collection" class="tab-content">
+    <div class="p-section">
+      <div class="p-section-title">🎨 My Skins (6 / 24)</div>
+      <div class="coll-grid">
+        <div class="coll-item active-item"><span class="coll-emoji">🪨</span><div class="coll-name">Classic Rock</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item"><span class="coll-emoji">📄</span><div class="coll-name">Classic Paper</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item"><span class="coll-emoji">✂️</span><div class="coll-name">Classic Scissors</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item"><span class="coll-emoji">🌋</span><div class="coll-name">Volcano Rock</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item"><span class="coll-emoji">🗺️</span><div class="coll-name">Ancient Map</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item"><span class="coll-emoji">💎</span><div class="coll-name">Crystal Rock</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
+        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">☄️</span><div class="coll-name">Meteor Rock</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
+        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">⚔️</span><div class="coll-name">Blade Scissors</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
+      </div>
+    </div>
+    <div class="p-section">
+      <div class="p-section-title">💃 Emotes (2 / 12)</div>
+      <div class="coll-grid">
+        <div class="coll-item active-item"><span class="coll-emoji">😂</span><div class="coll-name">Laugh Taunt</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item"><span class="coll-emoji">🕺</span><div class="coll-name">Victory Dance</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">🤣</span><div class="coll-name">Big Laugh</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">🔥</span><div class="coll-name">Fire Taunt</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(btn,name){
+  document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+function editProfile(){
+  const name=prompt('Enter your display name:',document.getElementById('profile-name').textContent);
+  if(name&&name.trim()){document.getElementById('profile-name').textContent=name.trim().toUpperCase();}
+}
+// load char from selection page
+const saved=localStorage.getItem('rps_char');
+if(saved){
+  const d=JSON.parse(saved);
+  document.getElementById('fav-char').textContent=d.emoji;
+  document.getElementById('fav-char-name').textContent=d.name;
+  document.getElementById('profile-avatar').textContent=d.emoji;
+}
+</script>
+</body>
+</html>

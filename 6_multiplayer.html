@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RPS Battle Arena – Multiplayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80;--blue:#378ADD}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+
+/* ONLINE BAR */
+.online-bar{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 24px;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.online-pill{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dot.green{background:var(--green);animation:blink 2s infinite}
+.dot.gold{background:var(--gold)}
+.dot.blue{background:var(--blue)}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:.5;box-shadow:none}}
+
+.page-header{padding:40px 24px 24px;text-align:center;background:linear-gradient(160deg,#1a1a2e,#0d0d1a);position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(55,138,221,.1),transparent 65%)}
+.page-title{font-family:'Bangers',cursive;font-size:clamp(36px,7vw,68px);letter-spacing:4px;color:var(--gold);position:relative}
+.page-sub{color:var(--muted);margin-top:8px;font-size:14px;letter-spacing:1px;position:relative}
+
+/* MAIN LAYOUT */
+.mp-layout{max-width:1100px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+
+.mp-card{background:var(--card);border-radius:20px;padding:28px;border:1px solid rgba(255,255,255,.06)}
+.mp-card-title{font-family:'Bangers',cursive;font-size:24px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.mp-card-sub{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.5}
+
+/* QUICK MATCH */
+.matchmaking-box{background:rgba(55,138,221,.06);border:1px solid rgba(55,138,221,.15);border-radius:16px;padding:24px;text-align:center;margin-bottom:16px}
+.mm-idle{font-size:52px;margin-bottom:10px}
+.mm-title{font-weight:900;font-size:16px;margin-bottom:6px}
+.mm-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+.btn-mm{background:linear-gradient(135deg,var(--blue),#1d6aa8);border:none;color:#fff;padding:14px 36px;border-radius:50px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;transition:all .2s;width:100%}
+.btn-mm:hover{transform:scale(1.03);box-shadow:0 6px 24px rgba(55,138,221,.4)}
+.btn-mm.searching{background:linear-gradient(135deg,#e94560,#c43059)}
+.mm-status{margin-top:12px;font-size:13px;font-weight:700;color:var(--muted);min-height:20px}
+.mm-status.found{color:var(--green)}
+
+/* MODE PILLS */
+.mode-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.mode-pill{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s}
+.mode-pill.active{border-color:var(--blue);color:var(--blue);background:rgba(55,138,221,.1)}
+
+/* INPUTS */
+.mp-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:12px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:12px;transition:border-color .2s}
+.mp-input:focus{outline:none;border-color:var(--gold)}
+.mp-select{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:12px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:12px;cursor:pointer}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#f59e0b);border:none;color:var(--darker);padding:13px 28px;border-radius:20px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;width:100%}
+.btn-gold:hover{transform:scale(1.02);box-shadow:0 4px 16px rgba(239,159,39,.4)}
+.btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.12);color:var(--muted);padding:12px 20px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;width:100%;margin-top:10px}
+.btn-ghost:hover{border-color:var(--muted);color:var(--text)}
+
+/* ROOM LIST */
+.rooms-label{font-size:11px;font-weight:900;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.room-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.room-item:hover{border-color:rgba(55,138,221,.4);background:rgba(55,138,221,.04)}
+.room-info{}
+.room-name{font-weight:900;font-size:14px;margin-bottom:2px}
+.room-meta{font-size:12px;color:var(--muted)}
+.room-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.status-badge{font-size:10px;font-weight:900;padding:4px 10px;border-radius:10px;letter-spacing:1px;text-transform:uppercase}
+.status-open{background:rgba(74,222,128,.15);color:var(--green)}
+.status-full{background:rgba(226,75,74,.15);color:#f87171}
+.status-in-game{background:rgba(239,159,39,.15);color:var(--gold)}
+.join-btn{background:rgba(55,138,221,.15);border:1px solid rgba(55,138,221,.3);color:var(--blue);padding:5px 14px;border-radius:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s}
+.join-btn:hover{background:var(--blue);color:#fff}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;margin-bottom:8px;transition:background .2s}
+.lb-row:hover{background:rgba(255,255,255,.03)}
+.lb-rank{font-family:'Bangers',cursive;font-size:20px;width:32px;text-align:center;flex-shrink:0}
+.lb-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.1)}
+.lb-name{flex:1;font-weight:900;font-size:14px}
+.lb-char{font-size:12px;color:var(--muted);margin-top:2px}
+.lb-score{font-family:'Bangers',cursive;font-size:20px;color:var(--gold)}
+.lb-row.me{background:rgba(233,69,96,.06);border:1px solid rgba(233,69,96,.2);border-radius:12px}
+.lb-row.me .lb-score{color:var(--accent)}
+.gold-row .lb-rank{color:var(--gold)}
+.silver-row .lb-rank{color:#94a3b8}
+.bronze-row .lb-rank{color:#cd7f32}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="1_home.html">⚔️ RPS ARENA</a>
+  <div class="nav-links">
+    <a class="nav-btn" href="1_home.html">Home</a>
+    <a class="nav-btn" href="2_character_selection.html">Characters</a>
+    <a class="nav-btn" href="3_battle_arena.html">Battle</a>
+    <a class="nav-btn" href="4_rewards.html">Rewards</a>
+    <a class="nav-btn" href="5_shop.html">Shop</a>
+    <a class="nav-btn active" href="6_multiplayer.html">Multiplayer</a>
+    <a class="nav-btn" href="7_profile.html">Profile</a>
+  </div>
+</nav>
+
+<div class="online-bar">
+  <div class="online-pill"><span class="dot green"></span><span style="color:var(--green)">12,847</span>&nbsp;online now</div>
+  <div class="online-pill"><span class="dot gold"></span><span>847</span>&nbsp;in ranked</div>
+  <div class="online-pill"><span class="dot blue"></span><span>1,240</span>&nbsp;in rooms</div>
+</div>
+
+<div class="page-header">
+  <h1 class="page-title">MULTIPLAYER</h1>
+  <p class="page-sub">Challenge real players from around the world</p>
+</div>
+
+<div class="mp-layout">
+
+  <!-- QUICK MATCH -->
+  <div class="mp-card">
+    <div class="mp-card-title">⚡ Quick Match</div>
+    <p class="mp-card-sub">Get paired with a player of similar skill. No waiting — just fight.</p>
+    <div class="mode-row">
+      <span class="mode-pill active" onclick="setMode(this)">Best of 3</span>
+      <span class="mode-pill" onclick="setMode(this)">Best of 5</span>
+      <span class="mode-pill" onclick="setMode(this)">Best of 7</span>
+      <span class="mode-pill" onclick="setMode(this)">Ranked</span>
+    </div>
+    <div class="matchmaking-box" id="mm-box">
+      <div class="mm-idle" id="mm-icon">🎮</div>
+      <div class="mm-title" id="mm-title">Ready to Battle?</div>
+      <div class="mm-sub" id="mm-sub">Press Find Match to enter the queue</div>
+      <button class="btn-mm" id="mm-btn" onclick="toggleMatchmaking()">FIND MATCH</button>
+      <div class="mm-status" id="mm-status"></div>
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <span style="font-size:12px;color:var(--muted)">Avg wait time: <strong style="color:var(--green)">~12 seconds</strong></span>
+    </div>
+  </div>
+
+  <!-- CREATE ROOM -->
+  <div class="mp-card">
+    <div class="mp-card-title">🏠 Create Room</div>
+    <p class="mp-card-sub">Host your own private battle room and invite a friend with a code.</p>
+    <input class="mp-input" placeholder="Room Name (e.g. Epic Showdown)" id="room-name"/>
+    <input class="mp-input" placeholder="Password (optional)" type="password" id="room-pass"/>
+    <select class="mp-select" id="room-mode">
+      <option>Best of 3</option>
+      <option selected>Best of 5</option>
+      <option>Best of 7</option>
+    </select>
+    <select class="mp-select" id="room-vis">
+      <option>Public Room</option>
+      <option>Private Room</option>
+    </select>
+    <button class="btn-gold" onclick="createRoom()">CREATE ROOM</button>
+    <div id="room-code-display" style="display:none;margin-top:14px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:14px 16px;text-align:center">
+      <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px">ROOM CODE</div>
+      <div id="room-code" style="font-family:'Bangers',cursive;font-size:32px;color:var(--green);letter-spacing:6px"></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Share this code with your friend</div>
+    </div>
+  </div>
+
+  <!-- JOIN ROOM -->
+  <div class="mp-card">
+    <div class="mp-card-title">🔍 Join Room</div>
+    <p class="mp-card-sub">Enter a room code to join a friend, or browse open public rooms below.</p>
+    <input class="mp-input" placeholder="Enter room code (e.g. AB3X7K)" id="join-code" style="text-transform:uppercase;letter-spacing:3px;font-family:'Bangers',cursive;font-size:18px"/>
+    <button class="btn-gold" onclick="joinByCode()">JOIN WITH CODE</button>
+    <button class="btn-ghost">SCAN QR CODE</button>
+    <div style="margin-top:20px">
+      <div class="rooms-label">Open Public Rooms</div>
+      <div id="room-list">
+        <div class="room-item"><div class="room-info"><div class="room-name">Arena Masters 🏆</div><div class="room-meta">Best of 5 · Rock · 1/2 players</div></div><div class="room-right"><span class="status-badge status-open">OPEN</span><button class="join-btn" onclick="joinRoom(this)">JOIN</button></div></div>
+        <div class="room-item"><div class="room-info"><div class="room-name">Chill Battle 😎</div><div class="room-meta">Best of 3 · Any · 1/2 players</div></div><div class="room-right"><span class="status-badge status-open">OPEN</span><button class="join-btn" onclick="joinRoom(this)">JOIN</button></div></div>
+        <div class="room-item"><div class="room-info"><div class="room-name">Pro Training Zone</div><div class="room-meta">Best of 7 · Paper · 2/2 players</div></div><div class="room-right"><span class="status-badge status-full">FULL</span></div></div>
+        <div class="room-item"><div class="room-info"><div class="room-name">Weekend Warriors</div><div class="room-meta">Best of 5 · Any · 1/2 players</div></div><div class="room-right"><span class="status-badge status-open">OPEN</span><button class="join-btn" onclick="joinRoom(this)">JOIN</button></div></div>
+        <div class="room-item"><div class="room-info"><div class="room-name">Finals Practice 🎯</div><div class="room-meta">Best of 5 · Ranked · 2/2 playing</div></div><div class="room-right"><span class="status-badge status-in-game">IN GAME</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="mp-card">
+    <div class="mp-card-title">🏆 Leaderboard</div>
+    <p class="mp-card-sub">Top players this season. Can you reach the top?</p>
+    <div class="lb-row gold-row"><div class="lb-rank">🥇</div><div class="lb-avatar" style="background:rgba(239,159,39,.15);border-color:var(--gold)">🪨</div><div><div class="lb-name">ShadowRock99</div><div class="lb-char">Rock · 92% WR</div></div><div class="lb-score">2,847</div></div>
+    <div class="lb-row silver-row"><div class="lb-rank">🥈</div><div class="lb-avatar" style="background:rgba(55,138,221,.15)">📄</div><div><div class="lb-name">PaperQueen</div><div class="lb-char">Paper · 88% WR</div></div><div class="lb-score">2,641</div></div>
+    <div class="lb-row bronze-row"><div class="lb-rank">🥉</div><div class="lb-avatar" style="background:rgba(74,222,128,.15)">✂️</div><div><div class="lb-name">BladeRunner</div><div class="lb-char">Scissors · 85% WR</div></div><div class="lb-score">2,388</div></div>
+    <div class="lb-row" style="opacity:.8"><div class="lb-rank" style="color:var(--muted)">4</div><div class="lb-avatar">🪨</div><div><div class="lb-name">GraniteGod</div><div class="lb-char">Rock · 82% WR</div></div><div class="lb-score" style="color:var(--muted)">2,201</div></div>
+    <div class="lb-row" style="opacity:.8"><div class="lb-rank" style="color:var(--muted)">5</div><div class="lb-avatar">📄</div><div><div class="lb-name">ScrollMaster</div><div class="lb-char">Paper · 80% WR</div></div><div class="lb-score" style="color:var(--muted)">2,044</div></div>
+    <div style="height:1px;background:rgba(255,255,255,.06);margin:12px 0"></div>
+    <div class="lb-row me"><div class="lb-rank" style="color:var(--accent)">142</div><div class="lb-avatar" style="background:rgba(233,69,96,.15);border-color:var(--accent)">🧑</div><div><div class="lb-name">YOU</div><div class="lb-char">Gold · 71% WR</div></div><div class="lb-score">987</div></div>
+    <div style="text-align:center;margin-top:16px"><button class="btn-ghost" style="width:auto;padding:8px 24px">View Full Leaderboard</button></div>
+  </div>
+
+</div>
+
+<script>
+let searching=false;let mmInterval=null;let dots=0;
+function setMode(el){document.querySelectorAll('.mode-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function toggleMatchmaking(){
+  if(!searching){
+    searching=true;
+    document.getElementById('mm-btn').textContent='CANCEL';
+    document.getElementById('mm-btn').classList.add('searching');
+    document.getElementById('mm-icon').textContent='⏳';
+    document.getElementById('mm-title').textContent='Searching...';
+    mmInterval=setInterval(()=>{
+      dots=(dots+1)%4;
+      document.getElementById('mm-status').textContent='Finding opponent'+'.'.repeat(dots);
+      if(Math.random()<.12){
+        clearInterval(mmInterval);
+        document.getElementById('mm-icon').textContent='⚡';
+        document.getElementById('mm-title').textContent='Opponent Found!';
+        document.getElementById('mm-sub').textContent='ShadowRock99 · Gold II · 2,847 pts';
+        document.getElementById('mm-status').className='mm-status found';
+        document.getElementById('mm-status').textContent='✓ Match found! Entering arena...';
+        document.getElementById('mm-btn').textContent='ENTERING...';
+        document.getElementById('mm-btn').disabled=true;
+        setTimeout(()=>{window.location.href='3_battle_arena.html';},1800);
+      }
+    },500);
+  } else {
+    searching=false;clearInterval(mmInterval);
+    document.getElementById('mm-btn').textContent='FIND MATCH';
+    document.getElementById('mm-btn').classList.remove('searching');
+    document.getElementById('mm-icon').textContent='🎮';
+    document.getElementById('mm-title').textContent='Ready to Battle?';
+    document.getElementById('mm-sub').textContent='Press Find Match to enter the queue';
+    document.getElementById('mm-status').textContent='';
+    document.getElementById('mm-status').className='mm-status';
+  }
+}
+function createRoom(){
+  const name=document.getElementById('room-name').value||'My Battle Room';
+  const code=Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('room-code').textContent=code;
+  document.getElementById('room-code-display').style.display='block';
+}
+function joinByCode(){
+  const code=document.getElementById('join-code').value.trim().toUpperCase();
+  if(code.length<4){alert('Please enter a valid room code.');return;}
+  alert('Joining room: '+code+'...');
+}
+function joinRoom(btn){btn.textContent='Joining...';btn.disabled=true;setTimeout(()=>{window.location.href='3_battle_arena.html';},1200);}
+</script>
+</body>
+</html>

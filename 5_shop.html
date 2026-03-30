@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RPS Battle Arena – Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+
+.wallet{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.wallet-inner{display:flex;gap:16px}
+.w-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 14px}
+.w-val{font-family:'Bangers',cursive;font-size:20px;color:var(--gold)}
+.w-val.gem{color:#a78bfa}
+.w-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:1px}
+.featured-label{font-size:12px;color:var(--accent);font-weight:900;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.page-header{padding:40px 24px 24px;text-align:center;background:linear-gradient(160deg,#1a1a2e,#0d0d1a);position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.1),transparent 65%)}
+.page-title{font-family:'Bangers',cursive;font-size:clamp(36px,7vw,68px);letter-spacing:4px;color:var(--gold);position:relative}
+.page-sub{color:var(--muted);margin-top:8px;font-size:14px;letter-spacing:1px;position:relative}
+
+/* TABS */
+.tabs-bar{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:0 24px;display:flex;overflow-x:auto;gap:0;position:sticky;top:56px;z-index:90}
+.tab{background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);padding:16px 20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;white-space:nowrap;transition:all .2s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* FEATURED BANNER */
+.featured-banner{max-width:1100px;margin:28px auto 0;padding:0 24px}
+.f-banner{background:linear-gradient(135deg,rgba(233,69,96,.2),rgba(127,119,221,.2));border:1px solid rgba(233,69,96,.3);border-radius:20px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;position:relative;overflow:hidden}
+.f-banner::before{content:'⚡ LIMITED TIME';position:absolute;top:0;right:24px;background:var(--accent);color:#fff;font-size:9px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;letter-spacing:2px}
+.f-left{display:flex;align-items:center;gap:16px}
+.f-emoji{font-size:56px}
+.f-name{font-family:'Bangers',cursive;font-size:28px;color:var(--gold);letter-spacing:2px}
+.f-desc{color:var(--muted);font-size:13px;margin-top:4px}
+.f-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.f-old-price{font-size:14px;color:var(--muted);text-decoration:line-through}
+.f-price{font-family:'Bangers',cursive;font-size:28px;color:var(--gold)}
+.btn-buy{background:linear-gradient(135deg,var(--accent),#c43059);border:none;color:#fff;padding:12px 28px;border-radius:20px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;transition:all .2s}
+.btn-buy:hover{transform:scale(1.05);box-shadow:0 4px 20px rgba(233,69,96,.5)}
+
+/* SHOP GRID */
+.shop-section{max-width:1100px;margin:32px auto 0;padding:0 24px 60px}
+.section-label{font-family:'Bangers',cursive;font-size:22px;color:var(--muted);letter-spacing:3px;margin-bottom:16px}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+
+.shop-card{background:var(--card);border-radius:18px;overflow:hidden;border:1.5px solid rgba(255,255,255,.06);cursor:pointer;transition:all .3s;position:relative}
+.shop-card:hover{transform:translateY(-5px);border-color:rgba(239,159,39,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.shop-card.owned{opacity:.7}
+.shop-card.owned .card-buy-btn{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.3);color:var(--green)}
+
+.card-visual{height:120px;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative}
+.card-visual.rock-bg{background:linear-gradient(135deg,rgba(226,75,74,.15),rgba(226,75,74,.04))}
+.card-visual.paper-bg{background:linear-gradient(135deg,rgba(55,138,221,.15),rgba(55,138,221,.04))}
+.card-visual.scissors-bg{background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(74,222,128,.04))}
+.card-visual.bundle-bg{background:linear-gradient(135deg,rgba(239,159,39,.15),rgba(239,159,39,.04))}
+.card-visual.emote-bg{background:linear-gradient(135deg,rgba(127,119,221,.15),rgba(127,119,221,.04))}
+.card-visual.power-bg{background:linear-gradient(135deg,rgba(233,69,96,.15),rgba(233,69,96,.04))}
+
+.owned-tag{position:absolute;top:8px;right:8px;background:var(--green);color:var(--darker);font-size:8px;font-weight:900;padding:2px 8px;border-radius:6px;letter-spacing:1px}
+.new-tag{position:absolute;top:8px;left:8px;background:var(--accent);color:#fff;font-size:8px;font-weight:900;padding:2px 8px;border-radius:6px;letter-spacing:1px;animation:pulse 2s infinite}
+.hot-tag{position:absolute;top:8px;left:8px;background:var(--gold);color:var(--darker);font-size:8px;font-weight:900;padding:2px 8px;border-radius:6px;letter-spacing:1px}
+
+.card-info{padding:14px}
+.card-name{font-weight:900;font-size:15px;margin-bottom:4px}
+.card-rarity{font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:8px;display:inline-block;margin-bottom:10px}
+.r-common{background:rgba(160,160,192,.15);color:var(--muted)}
+.r-rare{background:rgba(55,138,221,.15);color:#60a5fa}
+.r-epic{background:rgba(127,119,221,.2);color:var(--purple)}
+.r-legendary{background:rgba(239,159,39,.2);color:var(--gold)}
+.card-buy-btn{width:100%;background:transparent;border:1.5px solid rgba(255,255,255,.12);color:var(--text);padding:9px;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.card-buy-btn:hover{border-color:var(--gold);color:var(--gold)}
+.price-coin{color:var(--gold)}
+.price-gem{color:#a78bfa}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="1_home.html">⚔️ RPS ARENA</a>
+  <div class="nav-links">
+    <a class="nav-btn" href="1_home.html">Home</a>
+    <a class="nav-btn" href="2_character_selection.html">Characters</a>
+    <a class="nav-btn" href="3_battle_arena.html">Battle</a>
+    <a class="nav-btn" href="4_rewards.html">Rewards</a>
+    <a class="nav-btn active" href="5_shop.html">Shop</a>
+    <a class="nav-btn" href="6_multiplayer.html">Multiplayer</a>
+    <a class="nav-btn" href="7_profile.html">Profile</a>
+  </div>
+</nav>
+
+<div class="wallet">
+  <div class="wallet-inner">
+    <div class="w-item"><span style="font-size:18px">🪙</span><div><div class="w-val" id="coins">1,250</div><div class="w-label">Coins</div></div></div>
+    <div class="w-item"><span style="font-size:18px">💎</span><div><div class="w-val gem">340</div><div class="w-label">Gems</div></div></div>
+  </div>
+  <span class="featured-label">🔥 Flash Sale — 24h left!</span>
+</div>
+
+<div class="page-header">
+  <h1 class="page-title">SHOP</h1>
+  <p class="page-sub">Deck out your fighter with legendary gear</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab active" onclick="switchTab(this,'all')">All Items</button>
+  <button class="tab" onclick="switchTab(this,'skins')">🎨 Skins</button>
+  <button class="tab" onclick="switchTab(this,'emotes')">💃 Emotes</button>
+  <button class="tab" onclick="switchTab(this,'powerups')">⚡ Power-Ups</button>
+  <button class="tab" onclick="switchTab(this,'bundles')">📦 Bundles</button>
+</div>
+
+<div class="featured-banner">
+  <div class="f-banner">
+    <div class="f-left">
+      <span class="f-emoji">🌋</span>
+      <div>
+        <div class="f-name">VOLCANO PACK</div>
+        <div class="f-desc">Volcanic Rock skin + Eruption emote + Fire Power-Up. Epic bundle deal!</div>
+      </div>
+    </div>
+    <div class="f-right">
+      <div><div class="f-old-price">💎 350</div><div class="f-price">💎 199</div></div>
+      <button class="btn-buy" onclick="buyItem(this,199,'gem')">BUY NOW</button>
+    </div>
+  </div>
+</div>
+
+<div class="shop-section">
+  <div class="section-label">⭐ FEATURED ITEMS</div>
+  <div class="shop-grid" id="shop-grid">
+
+    <div class="shop-card owned" data-cat="skins">
+      <div class="card-visual rock-bg"><span>🪨</span><span class="owned-tag">OWNED</span></div>
+      <div class="card-info"><div class="card-name">Classic Rock</div><span class="card-rarity r-common">Common</span><button class="card-buy-btn">✓ Owned</button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual rock-bg"><span>🌋</span><span class="hot-tag">HOT</span></div>
+      <div class="card-info"><div class="card-name">Volcano Rock</div><span class="card-rarity r-rare">Rare</span><button class="card-buy-btn" onclick="buyItem(this,800,'coin')"><span class="price-coin">🪙 800</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual rock-bg"><span>💎</span></div>
+      <div class="card-info"><div class="card-name">Crystal Rock</div><span class="card-rarity r-epic">Epic</span><button class="card-buy-btn" onclick="buyItem(this,120,'gem')"><span class="price-gem">💎 120</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual rock-bg"><span>☄️</span><span class="new-tag">NEW</span></div>
+      <div class="card-info"><div class="card-name">Meteor Rock</div><span class="card-rarity r-legendary">Legendary</span><button class="card-buy-btn" onclick="buyItem(this,280,'gem')"><span class="price-gem">💎 280</span></button></div>
+    </div>
+
+    <div class="shop-card owned" data-cat="skins">
+      <div class="card-visual paper-bg"><span>📄</span><span class="owned-tag">OWNED</span></div>
+      <div class="card-info"><div class="card-name">Classic Paper</div><span class="card-rarity r-common">Common</span><button class="card-buy-btn">✓ Owned</button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual paper-bg"><span>🗺️</span></div>
+      <div class="card-info"><div class="card-name">Ancient Map</div><span class="card-rarity r-rare">Rare</span><button class="card-buy-btn" onclick="buyItem(this,600,'coin')"><span class="price-coin">🪙 600</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual paper-bg"><span>📜</span></div>
+      <div class="card-info"><div class="card-name">Royal Scroll</div><span class="card-rarity r-epic">Epic</span><button class="card-buy-btn" onclick="buyItem(this,90,'gem')"><span class="price-gem">💎 90</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual paper-bg"><span>⚡</span><span class="new-tag">NEW</span></div>
+      <div class="card-info"><div class="card-name">Thunder Paper</div><span class="card-rarity r-legendary">Legendary</span><button class="card-buy-btn" onclick="buyItem(this,320,'gem')"><span class="price-gem">💎 320</span></button></div>
+    </div>
+
+    <div class="shop-card owned" data-cat="skins">
+      <div class="card-visual scissors-bg"><span>✂️</span><span class="owned-tag">OWNED</span></div>
+      <div class="card-info"><div class="card-name">Classic Scissors</div><span class="card-rarity r-common">Common</span><button class="card-buy-btn">✓ Owned</button></div>
+    </div>
+
+    <div class="shop-card" data-cat="skins">
+      <div class="card-visual scissors-bg"><span>⚔️</span><span class="hot-tag">HOT</span></div>
+      <div class="card-info"><div class="card-name">Blade Scissors</div><span class="card-rarity r-legendary">Legendary</span><button class="card-buy-btn" onclick="buyItem(this,250,'gem')"><span class="price-gem">💎 250</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="emotes">
+      <div class="card-visual emote-bg"><span>🕺</span></div>
+      <div class="card-info"><div class="card-name">Victory Dance</div><span class="card-rarity r-rare">Rare</span><button class="card-buy-btn" onclick="buyItem(this,400,'coin')"><span class="price-coin">🪙 400</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="emotes">
+      <div class="card-visual emote-bg"><span>😂</span></div>
+      <div class="card-info"><div class="card-name">Laugh Taunt</div><span class="card-rarity r-common">Common</span><button class="card-buy-btn" onclick="buyItem(this,150,'coin')"><span class="price-coin">🪙 150</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="powerups">
+      <div class="card-visual power-bg"><span>🛡️</span></div>
+      <div class="card-info"><div class="card-name">Shield Block</div><span class="card-rarity r-rare">Rare</span><button class="card-buy-btn" onclick="buyItem(this,60,'gem')"><span class="price-gem">💎 60</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="powerups">
+      <div class="card-visual power-bg"><span>👁️</span><span class="new-tag">NEW</span></div>
+      <div class="card-info"><div class="card-name">Reveal Sight</div><span class="card-rarity r-epic">Epic</span><button class="card-buy-btn" onclick="buyItem(this,100,'gem')"><span class="price-gem">💎 100</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="bundles">
+      <div class="card-visual bundle-bg"><span>📦</span></div>
+      <div class="card-info"><div class="card-name">Starter Bundle</div><span class="card-rarity r-epic">Epic</span><button class="card-buy-btn" onclick="buyItem(this,499,'coin')"><span class="price-coin">🪙 499</span></button></div>
+    </div>
+
+    <div class="shop-card" data-cat="bundles">
+      <div class="card-visual bundle-bg"><span>🎁</span><span class="hot-tag">BEST VALUE</span></div>
+      <div class="card-info"><div class="card-name">Champion Pack</div><span class="card-rarity r-legendary">Legendary</span><button class="card-buy-btn" onclick="buyItem(this,199,'gem')"><span class="price-gem">💎 199</span></button></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let coins=1250,gems=340;
+function buyItem(btn,price,currency){
+  const card=btn.closest('.shop-card');
+  if(currency==='coin'){
+    if(coins<price){alert('Not enough coins! 🪙');return;}
+    coins-=price;
+    document.getElementById('coins').textContent=coins.toLocaleString();
+  } else {
+    if(gems<price){alert('Not enough gems! 💎');return;}
+    gems-=price;
+  }
+  card.classList.add('owned');
+  const vis=card.querySelector('.card-visual');
+  let tag=vis.querySelector('.owned-tag');
+  if(!tag){tag=document.createElement('span');tag.className='owned-tag';tag.textContent='OWNED';vis.appendChild(tag);}
+  btn.textContent='✓ Owned';
+  btn.className='card-buy-btn';
+  btn.onclick=null;
+}
+function switchTab(btn,cat){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.shop-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+  });
+}
+</script>
+</body>
+</html>
