@@ -1,0 +1,73 @@
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;
+  --accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;
+}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
+.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.12)}
+
+/* HERO */
+.hero{position:relative;padding:80px 24px 60px;text-align:center;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.18) 0%,transparent 60%),linear-gradient(160deg,#1a1a2e 0%,#0f3460 100%)}
+.hero-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;font-size:28px;opacity:.08;animation:float linear infinite}
+@keyframes float{from{transform:translateY(110%) rotate(0deg)}to{transform:translateY(-10%) rotate(360deg)}}
+.hero-eyebrow{font-size:13px;font-weight:900;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:16px;opacity:0;animation:slideUp .6s .1s forwards}
+.hero-title{font-family:'Bangers',cursive;font-size:clamp(56px,12vw,110px);color:var(--gold);letter-spacing:6px;line-height:.95;text-shadow:0 0 60px rgba(239,159,39,.35),0 4px 20px rgba(0,0,0,.5);opacity:0;animation:slideUp .7s .25s forwards}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:clamp(15px,2.5vw,19px);color:var(--muted);margin:20px 0 40px;font-weight:700;letter-spacing:1px;opacity:0;animation:slideUp .7s .4s forwards}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* EMOJI FIGHTERS */
+.fighters-row{display:flex;justify-content:center;align-items:flex-end;gap:0;margin:0 0 48px;opacity:0;animation:slideUp .7s .55s forwards}
+.fighter{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 24px}
+.fighter-emoji{font-size:72px;display:block;animation:fighterBounce 3s ease-in-out infinite}
+.fighter:nth-child(2) .fighter-emoji{animation-delay:.5s;font-size:86px}
+.fighter:nth-child(3) .fighter-emoji{animation-delay:1s}
+@keyframes fighterBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.08)}}
+.fighter-label{font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px;color:var(--muted)}
+
+/* BUTTONS */
+.btn-group{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:slideUp .7s .7s forwards}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#c43059);border:none;color:#fff;padding:18px 52px;border-radius:50px;font-size:18px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:3px;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 28px rgba(233,69,96,.45);text-decoration:none;display:inline-block}
+.btn-primary:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 12px 36px rgba(233,69,96,.65)}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);padding:16px 36px;border-radius:50px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-outline:hover{background:var(--gold);color:var(--darker)}
+
+/* STATS STRIP */
+.stats-strip{display:flex;justify-content:center;gap:0;background:var(--dark);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.stat-item{flex:1;max-width:200px;padding:28px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Bangers',cursive;font-size:42px;color:var(--gold);line-height:1}
+.stat-label{font-size:11px;font-weight:900;letter-spacing:2px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+
+/* SECTION */
+.section{padding:60px 24px;max-width:1100px;margin:0 auto}
+.section-title{font-family:'Bangers',cursive;font-size:42px;color:var(--gold);letter-spacing:4px;text-align:center;margin-bottom:10px}
+.section-sub{color:var(--muted);text-align:center;font-size:14px;margin-bottom:40px;letter-spacing:1px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.feat{background:var(--card);border-radius:20px;padding:32px 24px;border:1px solid rgba(255,255,255,.06);text-align:center;transition:transform .3s,border-color .3s}
+.feat:hover{transform:translateY(-6px);border-color:rgba(239,159,39,.3)}
+.feat-icon{font-size:48px;margin-bottom:16px}
+.feat-name{font-family:'Bangers',cursive;font-size:22px;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+.feat-desc{color:var(--muted);font-size:14px;line-height:1.6}
+
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;position:relative}
+.how-step{background:var(--card);border-radius:20px;padding:28px 20px;text-align:center;border:1px solid rgba(255,255,255,.06);position:relative}
+.step-num{font-family:'Bangers',cursive;font-size:48px;color:var(--accent);opacity:.3;line-height:1;margin-bottom:8px}
+.step-icon{font-size:36px;margin-bottom:12px}
+.step-title{font-weight:900;font-size:15px;color:var(--text);margin-bottom:6px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:32px 24px;text-align:center;color:var(--muted);font-size:13px}
+footer span{color:var(--gold);font-weight:900}

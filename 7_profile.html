@@ -5,114 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>RPS Battle Arena – Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#EF9F27;--dark:#1a1a2e;--darker:#0d0d1a;--card:#16213e;--accent:#e94560;--purple:#7F77DD;--text:#f0f0f0;--muted:#a0a0c0;--green:#4ade80;--blue:#378ADD}
-body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);min-height:100vh}
-nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
-.nav-logo{font-family:'Bangers',cursive;font-size:26px;color:var(--gold);letter-spacing:3px;text-decoration:none}
-.nav-links{display:flex;gap:6px;flex-wrap:wrap}
-.nav-btn{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-block}
-.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(239,159,39,.1)}
-
-/* HERO BANNER */
-.profile-banner{background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 50%,#1a0a2e 100%);padding:48px 24px 0;position:relative;overflow:hidden}
-.profile-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(239,159,39,.12),transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(233,69,96,.1),transparent 55%)}
-.banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;position:relative}
-.avatar-wrap{position:relative;flex-shrink:0}
-.avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:50px;border:4px solid var(--gold);box-shadow:0 0 30px rgba(239,159,39,.25)}
-.avatar-level{position:absolute;bottom:-4px;right:-4px;background:var(--gold);color:var(--darker);font-family:'Bangers',cursive;font-size:14px;padding:2px 8px;border-radius:10px;letter-spacing:1px}
-.profile-info{flex:1;padding-bottom:24px}
-.profile-name{font-family:'Bangers',cursive;font-size:clamp(32px,6vw,56px);color:var(--gold);letter-spacing:3px;line-height:1}
-.profile-id{color:var(--muted);font-size:13px;margin:6px 0 10px;font-weight:700}
-.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.rank-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(239,159,39,.25),rgba(239,159,39,.1));border:1px solid rgba(239,159,39,.4);color:var(--gold);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900;letter-spacing:1px}
-.title-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(127,119,221,.2);border:1px solid rgba(127,119,221,.4);color:var(--purple);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900}
-.verified-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(55,138,221,.2);border:1px solid rgba(55,138,221,.4);color:var(--blue);padding:5px 14px;border-radius:12px;font-size:13px;font-weight:900}
-.favorite-char{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700}
-.banner-actions{padding-bottom:24px;display:flex;flex-direction:column;gap:8px;align-self:flex-end}
-.btn-edit{background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
-.btn-edit:hover{background:var(--gold);color:var(--darker)}
-.btn-share{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:var(--muted);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
-.btn-share:hover{border-color:var(--muted);color:var(--text)}
-
-/* TABS */
-.profile-tabs{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);padding:0 24px;display:flex;overflow-x:auto}
-.p-tab{background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);padding:14px 18px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;white-space:nowrap;transition:all .2s}
-.p-tab:hover{color:var(--text)}
-.p-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-
-/* CONTENT */
-.profile-content{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
-.p-section{margin-bottom:36px}
-.p-section-title{font-family:'Bangers',cursive;font-size:22px;color:var(--muted);letter-spacing:3px;margin-bottom:16px;text-transform:uppercase}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.stat-box{background:var(--card);border-radius:16px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,.06);transition:border-color .2s}
-.stat-box:hover{border-color:rgba(239,159,39,.2)}
-.s-num{font-family:'Bangers',cursive;font-size:36px;line-height:1}
-.s-label{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--muted);margin-top:4px;text-transform:uppercase}
-
-/* WIN RATE CHART */
-.wr-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.wr-card{background:var(--card);border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,.06)}
-.wr-title{font-weight:900;font-size:15px;margin-bottom:16px;color:var(--gold)}
-.donut-wrap{display:flex;align-items:center;gap:20px}
-.donut-svg{flex-shrink:0}
-.donut-legend{display:flex;flex-direction:column;gap:8px}
-.leg-item{display:flex;align-items:center;gap:8px;font-size:13px}
-.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.bar-stat{margin-bottom:10px}
-.bar-label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}
-.bar-track{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px}
-
-/* ACHIEVEMENTS */
-.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.ach-card{background:var(--card);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.06);transition:all .2s}
-.ach-card:hover{border-color:rgba(239,159,39,.2)}
-.ach-card.locked{opacity:.35;filter:grayscale(.7)}
-.ach-card.rare{border-color:rgba(127,119,221,.3)}
-.ach-icon{font-size:36px;flex-shrink:0}
-.ach-info{flex:1}
-.ach-name{font-weight:900;font-size:14px;color:var(--gold);margin-bottom:3px}
-.ach-card.locked .ach-name{color:var(--muted)}
-.ach-desc{font-size:12px;color:var(--muted);line-height:1.4}
-.ach-date{font-size:10px;color:rgba(255,255,255,.25);margin-top:4px}
-.ach-rarity{font-size:10px;font-weight:900;padding:2px 8px;border-radius:6px;flex-shrink:0}
-.ar-common{background:rgba(160,160,192,.15);color:var(--muted)}
-.ar-rare{background:rgba(127,119,221,.2);color:var(--purple)}
-.ar-epic{background:rgba(233,69,96,.2);color:var(--accent)}
-.ar-legend{background:rgba(239,159,39,.2);color:var(--gold)}
-
-/* MATCH HISTORY */
-.match-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--card);border-radius:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,.06)}
-.match-result{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:16px;letter-spacing:1px;flex-shrink:0}
-.result-w{background:rgba(74,222,128,.15);border:1.5px solid var(--green);color:var(--green)}
-.result-l{background:rgba(233,69,96,.15);border:1.5px solid var(--accent);color:var(--accent)}
-.result-d{background:rgba(239,159,39,.15);border:1.5px solid var(--gold);color:var(--gold)}
-.match-opp{flex:1}
-.match-opp-name{font-weight:900;font-size:14px;margin-bottom:2px}
-.match-meta{font-size:12px;color:var(--muted)}
-.match-score{font-family:'Bangers',cursive;font-size:20px}
-.match-score.w{color:var(--green)}
-.match-score.l{color:var(--accent)}
-.match-score.d{color:var(--gold)}
-.match-xp{font-size:12px;font-weight:900;color:var(--gold)}
-
-/* COLLECTION */
-.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
-.coll-item{background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.06)}
-.coll-item.active-item{border-color:var(--gold);background:rgba(239,159,39,.07)}
-.coll-emoji{font-size:34px;display:block;margin-bottom:6px}
-.coll-name{font-size:11px;font-weight:700;color:var(--muted)}
-.coll-rarity{font-size:9px;font-weight:900;margin-top:3px}
-
-/* HIDDEN TABS */
-.tab-content{display:none}
-.tab-content.active{display:block}
-</style>
+<link rel="stylesheet" href="static/css/base.css"/>
+<link rel="stylesheet" href="static/css/7_profile.css"/>
 </head>
 <body>
 <nav>
@@ -137,7 +31,7 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
     </div>
     <div class="profile-info">
       <div class="profile-name" id="profile-name">ARENA WARRIOR</div>
-      <div class="profile-id">Player ID: #00142 &nbsp;·&nbsp; Joined March 2025 &nbsp;·&nbsp; 🌏 India</div>
+      <div class="profile-id">Player ID: #00142 &nbsp;·&nbsp; Joined March 2026 &nbsp;·&nbsp; 🌏 India</div>
       <div class="badge-row">
         <span class="rank-badge">👑 Gold II</span>
         <span class="title-badge">⚡ Combo King</span>
@@ -145,11 +39,21 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
       </div>
       <div class="favorite-char">
         <span>Main Fighter:</span><span style="font-size:20px" id="fav-char">🪨</span><span id="fav-char-name" style="color:var(--text)">Rock</span>
+        <span class="equipped-top-meta">Skin: <strong id="equipped-skin-top">Classic Rock</strong></span>
+        <span class="equipped-top-meta">Emotes: <strong id="equipped-emote-top">😂</strong></span>
       </div>
     </div>
     <div class="banner-actions">
       <button class="btn-edit" onclick="editProfile()">✏️ Edit Profile</button>
-      <button class="btn-share">📤 Share Profile</button>
+      <button class="btn-share" id="share-btn" type="button">📤 Share Profile</button>
+      <div class="share-menu" id="share-menu" aria-hidden="true">
+        <button class="share-item" type="button" data-share="copy">🔗 Copy Link</button>
+        <button class="share-item" type="button" data-share="whatsapp">🟢 WhatsApp</button>
+        <button class="share-item" type="button" data-share="telegram">📨 Telegram</button>
+        <button class="share-item" type="button" data-share="x">✖ X</button>
+        <button class="share-item" type="button" data-share="native">📱 More Apps</button>
+        <p class="share-note" id="share-note">Choose how you want to share your profile.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -171,9 +75,9 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
         <div class="stat-box"><div class="s-num" style="color:var(--green)">142</div><div class="s-label">Total Wins</div></div>
         <div class="stat-box"><div class="s-num" style="color:var(--accent)">58</div><div class="s-label">Losses</div></div>
         <div class="stat-box"><div class="s-num" style="color:var(--gold)">12</div><div class="s-label">Draws</div></div>
-        <div class="stat-box"><div class="s-num" style="color:var(--gold)">71%</div><div class="s-label">Win Rate</div></div>
+        <div class="stat-box stat-box-click" data-stat-action="win-rate"><div class="s-num" style="color:var(--gold)">71%</div><div class="s-label">Win Rate</div></div>
         <div class="stat-box"><div class="s-num" style="color:var(--purple)">12</div><div class="s-label">Best Streak</div></div>
-        <div class="stat-box"><div class="s-num" style="color:var(--blue)">212</div><div class="s-label">Battles</div></div>
+        <div class="stat-box stat-box-click" data-stat-action="battles"><div class="s-num" style="color:var(--blue)">212</div><div class="s-label">Battles</div></div>
         <div class="stat-box"><div class="s-num" style="color:var(--gold)">1,250</div><div class="s-label">Coins</div></div>
         <div class="stat-box"><div class="s-num" style="color:#a78bfa">340</div><div class="s-label">Gems</div></div>
       </div>
@@ -182,7 +86,7 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
     <div class="p-section">
       <div class="p-section-title">📈 Performance</div>
       <div class="wr-section">
-        <div class="wr-card">
+        <div class="wr-card perf-chart-card" id="perf-overall-chart">
           <div class="wr-title">Overall Win Rate</div>
           <div class="donut-wrap">
             <svg width="90" height="90" viewBox="0 0 90 90" class="donut-svg">
@@ -198,11 +102,60 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
             </div>
           </div>
         </div>
-        <div class="wr-card">
+        <div class="wr-card perf-chart-card" id="perf-move-chart">
           <div class="wr-title">Move Usage</div>
           <div class="bar-stat"><div class="bar-label"><span>🪨 Rock</span><span>52%</span></div><div class="bar-track"><div class="bar-fill" style="width:52%;background:linear-gradient(90deg,#E24B4A,#f87171)"></div></div></div>
           <div class="bar-stat"><div class="bar-label"><span>📄 Paper</span><span>28%</span></div><div class="bar-track"><div class="bar-fill" style="width:28%;background:linear-gradient(90deg,var(--blue),#60a5fa)"></div></div></div>
           <div class="bar-stat"><div class="bar-label"><span>✂️ Scissors</span><span>20%</span></div><div class="bar-track"><div class="bar-fill" style="width:20%;background:linear-gradient(90deg,var(--green),#86efac)"></div></div></div>
+        </div>
+      </div>
+
+      <div class="analytics-panel" id="analytics-panel">
+        <div class="analytics-head">
+          <h3 class="analytics-title">Detailed Analytics</h3>
+          <button class="analytics-close" type="button" id="analytics-close" aria-label="Close detailed analytics">✕</button>
+        </div>
+        <p class="analytics-sub">Click charts to expand this panel. Use filters to inspect move-level performance.</p>
+
+        <div class="move-filters" id="move-filters">
+          <button class="move-filter active" type="button" data-move="all">All</button>
+          <button class="move-filter" type="button" data-move="rock">🪨 Rock</button>
+          <button class="move-filter" type="button" data-move="paper">📄 Paper</button>
+          <button class="move-filter" type="button" data-move="scissors">✂️ Scissors</button>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="analytics-metric">
+            <div class="a-label">Win Rate</div>
+            <div class="a-value" id="a-win-rate">71%</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="a-label">Avg Match Duration</div>
+            <div class="a-value" id="a-duration">02:14</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="a-label">First Move Success</div>
+            <div class="a-value" id="a-first-move">66%</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="a-label">Counter Accuracy</div>
+            <div class="a-value" id="a-counter">58%</div>
+          </div>
+        </div>
+
+        <div class="analytics-bars">
+          <div class="a-bar-row">
+            <div class="a-bar-meta"><span>Attack Efficiency</span><span id="a-attack-pct">74%</span></div>
+            <div class="a-bar-track"><div class="a-bar-fill attack" id="a-attack-bar" style="width:74%"></div></div>
+          </div>
+          <div class="a-bar-row">
+            <div class="a-bar-meta"><span>Defense Read</span><span id="a-defense-pct">64%</span></div>
+            <div class="a-bar-track"><div class="a-bar-fill defense" id="a-defense-bar" style="width:64%"></div></div>
+          </div>
+          <div class="a-bar-row">
+            <div class="a-bar-meta"><span>Clutch Rounds</span><span id="a-clutch-pct">49%</span></div>
+            <div class="a-bar-track"><div class="a-bar-fill clutch" id="a-clutch-bar" style="width:49%"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -213,12 +166,12 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
     <div class="p-section">
       <div class="p-section-title">🏆 Achievements (14 / 32)</div>
       <div class="ach-grid">
-        <div class="ach-card"><div class="ach-icon">🏆</div><div class="ach-info"><div class="ach-name">First Victory</div><div class="ach-desc">Win your very first battle</div><div class="ach-date">March 15, 2025</div></div><span class="ach-rarity ar-common">Common</span></div>
-        <div class="ach-card"><div class="ach-icon">🔥</div><div class="ach-info"><div class="ach-name">On Fire</div><div class="ach-desc">Achieve a 5 win streak</div><div class="ach-date">March 22, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
-        <div class="ach-card rare"><div class="ach-icon">🪨</div><div class="ach-info"><div class="ach-name">Rock Solid</div><div class="ach-desc">Win 50 battles as Rock</div><div class="ach-date">April 1, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
-        <div class="ach-card"><div class="ach-icon">⚡</div><div class="ach-info"><div class="ach-name">Lightning Reflexes</div><div class="ach-desc">Win a round in under 2 seconds</div><div class="ach-date">March 18, 2025</div></div><span class="ach-rarity ar-common">Common</span></div>
-        <div class="ach-card"><div class="ach-icon">🌐</div><div class="ach-info"><div class="ach-name">Social Warrior</div><div class="ach-desc">Win 10 multiplayer matches</div><div class="ach-date">April 5, 2025</div></div><span class="ach-rarity ar-rare">Rare</span></div>
-        <div class="ach-card"><div class="ach-icon">🎯</div><div class="ach-info"><div class="ach-name">Perfect Match</div><div class="ach-desc">Win a best-of-5 without losing</div><div class="ach-date">April 8, 2025</div></div><span class="ach-rarity ar-epic">Epic</span></div>
+        <div class="ach-card"><div class="ach-icon">🏆</div><div class="ach-info"><div class="ach-name">First Victory</div><div class="ach-desc">Win your very first battle</div><div class="ach-date">March 15, 2026</div></div><span class="ach-rarity ar-common">Common</span></div>
+        <div class="ach-card"><div class="ach-icon">🔥</div><div class="ach-info"><div class="ach-name">On Fire</div><div class="ach-desc">Achieve a 5 win streak</div><div class="ach-date">March 22, 2026</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card rare"><div class="ach-icon">🪨</div><div class="ach-info"><div class="ach-name">Rock Solid</div><div class="ach-desc">Win 50 battles as Rock</div><div class="ach-date">April 1, 2026</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card"><div class="ach-icon">⚡</div><div class="ach-info"><div class="ach-name">Lightning Reflexes</div><div class="ach-desc">Win a round in under 2 seconds</div><div class="ach-date">March 18, 2026</div></div><span class="ach-rarity ar-common">Common</span></div>
+        <div class="ach-card"><div class="ach-icon">🌐</div><div class="ach-info"><div class="ach-name">Social Warrior</div><div class="ach-desc">Win 10 multiplayer matches</div><div class="ach-date">April 5, 2026</div></div><span class="ach-rarity ar-rare">Rare</span></div>
+        <div class="ach-card"><div class="ach-icon">🎯</div><div class="ach-info"><div class="ach-name">Perfect Match</div><div class="ach-desc">Win a best-of-5 without losing</div><div class="ach-date">April 8, 2026</div></div><span class="ach-rarity ar-epic">Epic</span></div>
         <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-info"><div class="ach-name">Legend</div><div class="ach-desc">Reach Legendary rank</div></div><span class="ach-rarity ar-legend">Legend</span></div>
         <div class="ach-card locked"><div class="ach-icon">💯</div><div class="ach-info"><div class="ach-name">Century Club</div><div class="ach-desc">Play 100 battles in a row</div></div><span class="ach-rarity ar-epic">Epic</span></div>
         <div class="ach-card locked"><div class="ach-icon">🌍</div><div class="ach-info"><div class="ach-name">World Conqueror</div><div class="ach-desc">Beat players from 50 countries</div></div><span class="ach-rarity ar-legend">Legend</span></div>
@@ -246,47 +199,158 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
     <div class="p-section">
       <div class="p-section-title">🎨 My Skins (6 / 24)</div>
       <div class="coll-grid">
-        <div class="coll-item active-item"><span class="coll-emoji">🪨</span><div class="coll-name">Classic Rock</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
-        <div class="coll-item"><span class="coll-emoji">📄</span><div class="coll-name">Classic Paper</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
-        <div class="coll-item"><span class="coll-emoji">✂️</span><div class="coll-name">Classic Scissors</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
-        <div class="coll-item"><span class="coll-emoji">🌋</span><div class="coll-name">Volcano Rock</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
-        <div class="coll-item"><span class="coll-emoji">🗺️</span><div class="coll-name">Ancient Map</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
-        <div class="coll-item"><span class="coll-emoji">💎</span><div class="coll-name">Crystal Rock</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
-        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">☄️</span><div class="coll-name">Meteor Rock</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
-        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">⚔️</span><div class="coll-name">Blade Scissors</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
+        <div class="coll-item active-item" data-type="skin" data-unlocked="true" data-name="Classic Rock" data-rarity="Common" data-icon="🪨"><span class="coll-emoji">🪨</span><div class="coll-name">Classic Rock</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item" data-type="skin" data-unlocked="true" data-name="Classic Paper" data-rarity="Common" data-icon="📄"><span class="coll-emoji">📄</span><div class="coll-name">Classic Paper</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item" data-type="skin" data-unlocked="true" data-name="Classic Scissors" data-rarity="Common" data-icon="✂️"><span class="coll-emoji">✂️</span><div class="coll-name">Classic Scissors</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item" data-type="skin" data-unlocked="true" data-name="Volcano Rock" data-rarity="Rare" data-icon="🌋"><span class="coll-emoji">🌋</span><div class="coll-name">Volcano Rock</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item" data-type="skin" data-unlocked="true" data-name="Ancient Map" data-rarity="Rare" data-icon="🗺️"><span class="coll-emoji">🗺️</span><div class="coll-name">Ancient Map</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item" data-type="skin" data-unlocked="true" data-name="Crystal Rock" data-rarity="Epic" data-icon="💎"><span class="coll-emoji">💎</span><div class="coll-name">Crystal Rock</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
+        <div class="coll-item locked-item" data-type="skin" data-unlocked="false" data-name="Meteor Rock" data-rarity="Legendary" data-icon="☄️" data-unlock="Win 100 battles to unlock Meteor Rock" data-progress="62/100"><span class="coll-emoji">☄️</span><div class="coll-name">Meteor Rock</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
+        <div class="coll-item locked-item" data-type="skin" data-unlocked="false" data-name="Blade Scissors" data-rarity="Legendary" data-icon="⚔️" data-unlock="Win 50 ranked matches to unlock Blade Scissors" data-progress="18/50"><span class="coll-emoji">⚔️</span><div class="coll-name">Blade Scissors</div><div class="coll-rarity" style="color:var(--gold)">Legendary</div></div>
       </div>
     </div>
     <div class="p-section">
       <div class="p-section-title">💃 Emotes (2 / 12)</div>
       <div class="coll-grid">
-        <div class="coll-item active-item"><span class="coll-emoji">😂</span><div class="coll-name">Laugh Taunt</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
-        <div class="coll-item"><span class="coll-emoji">🕺</span><div class="coll-name">Victory Dance</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
-        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">🤣</span><div class="coll-name">Big Laugh</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
-        <div class="coll-item" style="opacity:.25;filter:grayscale(.8)"><span class="coll-emoji">🔥</span><div class="coll-name">Fire Taunt</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
+        <div class="coll-item active-item" data-type="emote" data-unlocked="true" data-name="Laugh Taunt" data-rarity="Common" data-icon="😂" draggable="true"><span class="coll-emoji">😂</span><div class="coll-name">Laugh Taunt</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item" data-type="emote" data-unlocked="true" data-name="Victory Dance" data-rarity="Rare" data-icon="🕺" draggable="true"><span class="coll-emoji">🕺</span><div class="coll-name">Victory Dance</div><div class="coll-rarity" style="color:#60a5fa">Rare</div></div>
+        <div class="coll-item locked-item" data-type="emote" data-unlocked="false" data-name="Big Laugh" data-rarity="Common" data-icon="🤣" data-unlock="Win 25 matches to unlock Big Laugh" data-progress="17/25"><span class="coll-emoji">🤣</span><div class="coll-name">Big Laugh</div><div class="coll-rarity" style="color:var(--muted)">Common</div></div>
+        <div class="coll-item locked-item" data-type="emote" data-unlocked="false" data-name="Fire Taunt" data-rarity="Epic" data-icon="🔥" data-unlock="Win 50 matches to unlock Fire Taunt" data-progress="31/50"><span class="coll-emoji">🔥</span><div class="coll-name">Fire Taunt</div><div class="coll-rarity" style="color:var(--purple)">Epic</div></div>
+      </div>
+    </div>
+
+    <div class="p-section">
+      <div class="p-section-title">🎛️ Customization</div>
+      <div class="collection-panel" id="collection-panel">
+        <div class="collection-top">
+          <div class="collection-preview" id="collection-preview">🪨</div>
+          <div>
+            <div class="collection-name" id="collection-name">Classic Rock</div>
+            <div class="collection-meta" id="collection-meta">Common · Skin</div>
+          </div>
+        </div>
+        <p class="collection-desc" id="collection-desc">Select a skin or emote card to view details and actions.</p>
+
+        <div class="collection-progress" id="collection-progress-wrap">
+          <div class="collection-progress-meta"><span id="collection-progress-label">Unlock Progress</span><span id="collection-progress-text">0%</span></div>
+          <div class="collection-progress-track"><div class="collection-progress-fill" id="collection-progress-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="collection-actions">
+          <button class="collection-btn primary" type="button" id="collection-action-btn">Equip</button>
+          <button class="collection-btn ghost" type="button" id="collection-secondary-btn" style="display:none">Go to Battle</button>
+        </div>
+
+        <div class="active-slots-wrap">
+          <div class="active-slots-title">Active Emote Slots (drag emote here)</div>
+          <div class="active-slots" id="active-slots">
+            <div class="emote-slot" data-slot-index="0">+</div>
+            <div class="emote-slot" data-slot-index="1">+</div>
+            <div class="emote-slot" data-slot-index="2">+</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-function switchTab(btn,name){
-  document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-}
-function editProfile(){
-  const name=prompt('Enter your display name:',document.getElementById('profile-name').textContent);
-  if(name&&name.trim()){document.getElementById('profile-name').textContent=name.trim().toUpperCase();}
-}
-// load char from selection page
-const saved=localStorage.getItem('rps_char');
-if(saved){
-  const d=JSON.parse(saved);
-  document.getElementById('fav-char').textContent=d.emoji;
-  document.getElementById('fav-char-name').textContent=d.name;
-  document.getElementById('profile-avatar').textContent=d.emoji;
-}
-</script>
+<!-- ACHIEVEMENT DETAIL MODAL -->
+<div class="ach-modal" id="ach-modal" aria-hidden="true">
+  <div class="ach-modal-panel" role="dialog" aria-modal="true" aria-labelledby="ach-modal-title">
+    <div class="ach-modal-head">
+      <h2 id="ach-modal-title">Achievement Details</h2>
+      <button class="ach-modal-close" type="button" id="ach-modal-close" aria-label="Close achievement details">✕</button>
+    </div>
+
+    <div class="ach-modal-top">
+      <div class="ach-modal-icon" id="ach-modal-icon">🏆</div>
+      <div>
+        <div class="ach-modal-name" id="ach-modal-name">First Victory</div>
+        <div class="ach-modal-rarity" id="ach-modal-rarity">Common</div>
+      </div>
+    </div>
+
+    <div class="ach-modal-grid">
+      <div class="ach-field">
+        <div class="ach-field-label">Full Description</div>
+        <div class="ach-field-value" id="ach-modal-desc">Win your very first battle.</div>
+      </div>
+      <div class="ach-field" id="ach-unlock-row">
+        <div class="ach-field-label">Unlock Date</div>
+        <div class="ach-field-value" id="ach-modal-date">March 15, 2026</div>
+      </div>
+      <div class="ach-field" id="ach-progress-row">
+        <div class="ach-field-label">Progress</div>
+        <div class="ach-field-value" id="ach-modal-progress">Completed</div>
+      </div>
+      <div class="ach-field">
+        <div class="ach-field-label">Reward Earned</div>
+        <div class="ach-field-value" id="ach-modal-reward">+50 coins</div>
+      </div>
+      <div class="ach-field">
+        <div class="ach-field-label">Status</div>
+        <div class="ach-field-value ach-status" id="ach-modal-status">✅ Unlocked</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="edit-modal" id="edit-modal" aria-hidden="true">
+  <div class="edit-panel" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+    <div class="edit-head">
+      <h2 id="edit-title">⚙️ Edit Profile</h2>
+      <button class="edit-close" type="button" id="edit-close-btn" aria-label="Close edit profile">✕</button>
+    </div>
+    <p class="edit-sub">Tune your name and avatar with real-time preview.</p>
+
+    <label class="edit-label" for="edit-name-input">Display Name</label>
+    <input class="edit-input" id="edit-name-input" type="text" maxlength="20" placeholder="Enter display name"/>
+
+    <div class="edit-preview-wrap">
+      <div class="edit-preview-avatar" id="edit-preview-avatar">🧑</div>
+      <div>
+        <div class="edit-preview-title">Live Preview</div>
+        <div class="edit-preview-name" id="edit-preview-name">ARENA WARRIOR</div>
+      </div>
+    </div>
+
+    <div class="edit-label">Choose Avatar</div>
+    <div class="avatar-grid" id="avatar-grid">
+      <button class="avatar-choice" type="button" data-avatar="🧑">🧑</button>
+      <button class="avatar-choice" type="button" data-avatar="🧙">🧙</button>
+      <button class="avatar-choice" type="button" data-avatar="🛡️">🛡️</button>
+      <button class="avatar-choice" type="button" data-avatar="⚔️">⚔️</button>
+      <button class="avatar-choice" type="button" data-avatar="👑">👑</button>
+      <button class="avatar-choice" type="button" data-avatar="🤖">🤖</button>
+    </div>
+
+    <div class="upload-row">
+      <label class="upload-btn" for="avatar-upload">🖼️ Upload Picture</label>
+      <input id="avatar-upload" type="file" accept="image/*" hidden/>
+      <span class="upload-note" id="upload-note">PNG/JPG up to 5MB</span>
+    </div>
+
+    <div class="edit-actions">
+      <button class="btn-cancel" type="button" id="edit-cancel-btn">Cancel</button>
+      <button class="btn-save" type="button" id="edit-save-btn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/base.js" defer></script>
+<script src="static/js/7_profile.js" defer></script>
+
+<div class="toast-msg" id="toast-msg" aria-live="polite"></div>
+
+<div class="unlock-popup" id="unlock-popup" aria-hidden="true">
+  <div class="unlock-popup-card">
+    <div class="unlock-badge">NEW SKIN UNLOCKED!</div>
+    <div class="unlock-icon" id="unlock-icon">🌋</div>
+    <div class="unlock-name" id="unlock-name">Volcano Rock</div>
+    <button class="unlock-btn" type="button" id="unlock-btn">Awesome!</button>
+  </div>
+</div>
 </body>
 </html>
+
