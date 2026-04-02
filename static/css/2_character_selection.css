@@ -95,3 +95,21 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 .btn-enter{background:linear-gradient(135deg,var(--accent),#c43059);border:none;color:#fff;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;transition:all .2s;text-decoration:none;opacity:.4;pointer-events:none}
 .btn-enter.ready{opacity:1;pointer-events:all}
 .btn-enter.ready:hover{transform:scale(1.05);box-shadow:0 8px 28px rgba(233,69,96,.5)}
+
+@media (max-width:900px){
+	.chars-grid{grid-template-columns:1fr 1fr}
+	.char-name{font-size:32px}
+}
+
+@media (max-width:640px){
+	.page-header{padding:40px 14px 24px}
+	.chars-wrapper{padding:28px 14px}
+	.chars-grid{grid-template-columns:1fr;gap:16px}
+	.char-header{padding:28px 18px 18px}
+	.char-emoji{font-size:72px}
+	.char-name{font-size:30px;letter-spacing:2px}
+	.char-body{padding:18px}
+	.bottom-bar{padding:14px;flex-direction:column;align-items:stretch}
+	.selected-preview{justify-content:center}
+	.btn-enter{width:100%;text-align:center}
+}

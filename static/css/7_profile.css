@@ -256,3 +256,29 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 /* HIDDEN TABS */
 .tab-content{display:none}
 .tab-content.active{display:block}
+
+@media (max-width:900px){
+	.profile-banner{padding:36px 14px 0}
+	.profile-tabs{padding:0 14px}
+	.profile-content{padding:20px 14px 46px}
+	.wr-section{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.banner-inner{flex-direction:column;align-items:center;text-align:center;gap:14px}
+	.profile-info{padding-bottom:8px}
+	.favorite-char{justify-content:center}
+	.banner-actions{width:100%;padding-bottom:16px;flex-direction:row;justify-content:center;flex-wrap:wrap}
+	.btn-edit,.btn-share{flex:1;min-width:140px;text-align:center}
+	.p-tab{padding:12px 14px;font-size:13px}
+	.stats-grid,.analytics-grid,.ach-grid{grid-template-columns:1fr}
+	.donut-wrap{flex-direction:column;align-items:flex-start;gap:10px}
+	.match-row{flex-wrap:wrap;padding:12px}
+	.match-opp{min-width:140px}
+	.coll-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+	.collection-top{align-items:flex-start}
+	.collection-name{font-size:22px}
+	.collection-actions{flex-direction:column}
+	.collection-btn{width:100%}
+	.toast-msg{left:14px;right:14px;bottom:14px;text-align:center}
+}

@@ -103,3 +103,25 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 .refer-actions{display:grid;grid-template-columns:1fr;gap:8px}
 .refer-action{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:10px 12px;color:var(--text);font-size:13px;font-weight:900;cursor:pointer;transition:all .2s}
 .refer-action:hover{border-color:var(--gold);color:var(--gold)}
+
+@media (max-width:900px){
+	.wallet{padding:14px}
+	.wallet-inner{gap:10px}
+	.w-item,.streak-info{padding:8px 12px}
+	.rewards-section,.streak-section{padding-left:14px;padding-right:14px}
+}
+
+@media (max-width:640px){
+	.wallet-coins{width:100%;gap:10px;flex-direction:column;align-items:stretch}
+	.w-item,.streak-info{justify-content:center}
+	.page-header{padding:36px 14px 22px}
+	.daily-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+	.day-box{min-width:0}
+	.rewards-grid{grid-template-columns:1fr;gap:14px}
+	.card-top{padding:24px 16px 16px}
+	.card-bottom{padding:14px 16px;flex-direction:column;align-items:flex-start}
+	.reward-actions{width:100%;justify-content:flex-start}
+	.claim-btn{width:100%;text-align:center}
+	.progress-wrap{padding:10px 16px 14px}
+	.reward-toast{left:14px;right:14px;bottom:14px;text-align:center}
+}

@@ -74,3 +74,28 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 .card-buy-btn:hover{border-color:var(--gold);color:var(--gold)}
 .price-coin{color:var(--gold)}
 .price-gem{color:#a78bfa}
+
+@media (max-width:900px){
+	.wallet{padding:12px 14px}
+	.tabs-bar{top:0;position:static;padding:0 14px}
+	.featured-banner,.shop-section{padding-left:14px;padding-right:14px}
+}
+
+@media (max-width:640px){
+	.wallet{flex-direction:column;align-items:stretch}
+	.wallet-inner{width:100%;justify-content:center;flex-wrap:wrap}
+	.featured-label{text-align:center}
+	.page-header{padding:32px 14px 20px}
+	.tab{padding:12px 14px;font-size:13px}
+	.f-banner{padding:16px;border-radius:14px}
+	.f-left{align-items:flex-start}
+	.f-emoji{font-size:40px}
+	.f-name{font-size:24px}
+	.f-right{width:100%;justify-content:space-between}
+	.btn-buy{width:100%}
+	.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+	.card-visual{height:100px;font-size:42px}
+	.card-info{padding:10px}
+	.card-name{font-size:13px}
+	.card-buy-btn{font-size:12px;padding:8px}
+}

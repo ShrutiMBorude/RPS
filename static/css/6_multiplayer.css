@@ -81,3 +81,22 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 .gold-row .lb-rank{color:var(--gold)}
 .silver-row .lb-rank{color:#94a3b8}
 .bronze-row .lb-rank{color:#cd7f32}
+
+@media (max-width:900px){
+	.online-bar{padding:10px 14px;gap:12px}
+	.mp-layout{padding:20px 14px 50px;grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.page-header{padding:32px 14px 18px}
+	.mp-card{padding:16px}
+	.matchmaking-box{padding:16px}
+	.mm-idle{font-size:40px}
+	.mode-row{gap:6px}
+	.mode-pill{font-size:11px;padding:6px 10px}
+	.room-item{flex-direction:column;align-items:flex-start;gap:10px}
+	.room-right{width:100%;justify-content:space-between}
+	.join-btn{padding:7px 14px}
+	.lb-row{padding:10px 8px;gap:8px}
+	.lb-name{font-size:13px}
+}

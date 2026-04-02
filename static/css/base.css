@@ -15,6 +15,7 @@ body{
   background:var(--darker);
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
 }
 nav{
   background:var(--dark);
@@ -57,7 +58,8 @@ nav{
   background:rgba(239,159,39,.1);
 }
 @media (max-width:640px){
-  nav{padding:10px 14px}
+  nav{padding:10px 14px;align-items:flex-start}
   .nav-logo{font-size:22px;letter-spacing:2px}
-  .nav-btn{font-size:11px;padding:6px 10px}
+  .nav-links{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .nav-btn{font-size:11px;padding:6px 10px;white-space:nowrap;flex-shrink:0}
 }

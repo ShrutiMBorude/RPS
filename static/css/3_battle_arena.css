@@ -104,3 +104,31 @@ nav{background:var(--dark);border-bottom:2px solid var(--accent);display:flex;al
 .go-btns{display:flex;flex-direction:column;gap:12px}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#f59e0b);border:none;color:var(--darker);padding:14px 32px;border-radius:50px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px}
 .btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:var(--muted);padding:12px 32px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;display:block}
+
+@media (max-width:900px){
+	.fighters-header{max-width:100%;gap:16px}
+	.field{max-width:100%}
+}
+
+@media (max-width:640px){
+	.arena-wrap{padding:14px 10px 90px}
+	.fighters-header{flex-direction:column;align-items:stretch;margin-bottom:14px}
+	.fighter-panel,.fighter-panel[style]{text-align:left !important}
+	.fighter-top,.fighter-top[style]{flex-direction:row !important}
+	.vs-center{font-size:30px}
+	.field{padding:20px 12px;border-radius:18px}
+	.round-badge{margin-bottom:16px}
+	.choices{gap:12px;flex-wrap:wrap}
+	.choice{width:94px;height:94px;border-radius:16px}
+	.choice-emoji{font-size:38px}
+	.result-text{letter-spacing:1px}
+	.move-btns{gap:10px}
+	.move-btn{width:84px;height:84px;border-radius:16px}
+	.m-emoji{font-size:32px}
+	.scoreboard{gap:18px}
+	.sc-num{font-size:30px}
+	.ctrl-row{gap:8px}
+	.ctrl-btn{width:100%;text-align:center}
+	.gameover-box{padding:28px 18px;border-radius:18px}
+	.go-title{font-size:40px;letter-spacing:2px}
+}
